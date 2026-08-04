@@ -5,7 +5,7 @@ from django.urls import path, include
 from django.views.generic import RedirectView
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='/myapp/login_/', permanent=False)),
+    path('', RedirectView.as_view(url='/myapp/login_get/', permanent=False)),
     path('admin/', admin.site.urls),
     path('myapp/', include('myapp.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
