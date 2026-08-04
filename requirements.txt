@@ -1,6 +1,6 @@
 Django==5.2.5
 gunicorn
-PyMySQL
-mysqlclient
+psycopg2-binary
+dj-database-url
 Pillow
 requests
