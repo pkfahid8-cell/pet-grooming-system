@@ -26,9 +26,11 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-0sten5&l78t#d!o9o%#2+km3vy1_e(*&y-k%i#!wzm=06%s+ob'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    "pet-grooming-system-s43b.onrender.com",
+]
 
 
 
