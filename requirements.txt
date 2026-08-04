@@ -26,7 +26,6 @@ cytoolz==1.1.0
 Django==5.2.5
 django-cors-headers==4.8.0
 djangorestframework==3.16.1
-dlib @ file:///C:/Python312/Scripts/dlib-19.24.99-cp312-cp312-win_amd64.whl#sha256=20c62e606ca4c9961305f7be3d03990380d3e6c17f8d27798996e97a73271862
 eth-account==0.13.7
 eth-hash==0.7.1
 eth-keyfile==0.8.1
