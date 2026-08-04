@@ -1,0 +1,191 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+    <style>
+
+        body {
+            background: #f1f3f5 !important;
+            font-family: "Poppins", sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth !important;
+        }
+
+        .edit-wrapper {
+            max-width: 850px;
+            margin: 40px auto;
+        }
+
+        .card-custom {
+            border-radius: 18px;
+            overflow: hidden;
+            background: #ffffff;
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.12);
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(25px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header-custom {
+            background: linear-gradient(135deg, #ff512f, #ff914d);
+            padding: 18px;
+            text-align: center;
+            color: #fff;
+            font-size: 1.7rem;
+            font-weight: 700;
+        }
+
+        .form-control,
+        .form-select,
+        textarea {
+            border: 2px solid #ffc49a;
+            padding: 10px 12px;
+            border-radius: 10px;
+            transition: 0.3s;
+            font-size: 15px;
+        }
+
+        .form-control:focus,
+        textarea:focus,
+        .form-select:focus {
+            border-color: #ff6b00;
+            background: #fff7ef;
+            box-shadow: 0 0 8px rgba(255, 110, 0, 0.4);
+        }
+
+        label {
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        /* Image Box */
+        .image-preview {
+            width: 100%;
+            height: 180px;
+            border: 2px dashed #ff914d;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            background: #fff7ef;
+            margin-bottom: 10px;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .btn-orange {
+            background: linear-gradient(135deg, #ff6b00, #ff8500);
+            border: none;
+            padding: 14px;
+            width: 100%;
+            color: white;
+            font-weight: 700;
+            border-radius: 10px;
+            font-size: 17px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn-orange:hover {
+            background: linear-gradient(135deg, #ff4f00, #ff7000);
+            transform: translateY(-2px);
+        }
+
+    </style>
+
+
+    <div class="edit-wrapper">
+
+        <div class="card-custom">
+
+            <div class="card-header-custom">
+                Edit Product
+            </div>
+
+            <div class="p-4">
+
+                <form action="/myapp/edit_product_post/" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="pro_id" value="{{ data.id }}">
+
+                    <!-- ROW 1 -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Product Name</label>
+                            <input type="text" name="pname" class="form-control" value="{{ data.pname }}" required>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Brand Name</label>
+                            <input type="text" name="brand_name" class="form-control" value="{{ data.brand_name }}"
+                                   required>
+                        </div>
+                    </div>
+
+                    <!-- ROW 2 -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label>Category</label>
+                            <select name="Category" class="form-select" required>
+                                {% for c in categories %}
+                                    <option value="{{ c.id }}">{{ c.cat_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label>Quantity</label>
+                            <input type="number" name="Quantity" class="form-control" value="{{ data.Quantity }}"
+                                   min="0" required>
+                        </div>
+                    </div>
+
+                    <!-- DESCRIPTION -->
+                    <div class="mb-3">
+                        <label>Description</label>
+                        <textarea name="description" class="form-control" rows="3"
+                                  required>{{ data.description }}</textarea>
+                    </div>
+
+                    <!-- PRICE -->
+                    <div class="mb-3">
+                        <label>Price</label>
+                        <input type="text" name="price" class="form-control" value="{{ data.price }}" required>
+                    </div>
+
+                    <!-- CURRENT IMAGE -->
+                    <label class="mt-2">Current Image</label>
+                    <div class="image-preview">
+                        <img src="{{ data.image }}" alt="Current Image">
+                    </div>
+
+                    <!-- NEW IMAGE -->
+                    <label>Change Image (optional)</label>
+                    <input type="file" name="image" accept="image/*" class="form-control">
+
+                    <button type="submit" class="btn-orange mt-3">Update Product</button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% endblock %}

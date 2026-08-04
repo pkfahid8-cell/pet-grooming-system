@@ -1,0 +1,327 @@
+{% extends 'login.html' %}
+{% block body %}
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #ffffff !important;
+        }
+
+        .page-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 50px 20px;
+        }
+
+        .shop-container {
+            width: 100%;
+            max-width: 600px;
+            background: linear-gradient(90deg, #ff6821, #ff8b24);
+            border-radius: 20px;
+            padding: 35px 40px;
+            color: white;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.20);
+        }
+
+        label {
+            font-weight: 600;
+            color: #ffffff;
+            display: block;
+            margin-top: 15px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: #ffffff;
+            border-radius: 10px;
+            margin-bottom: 5px;
+            border: none;
+            box-sizing: border-box;
+        }
+
+        .error {
+            color: #ffe6e6;
+            font-size: 12px;
+            display: none;
+            margin-bottom: 10px;
+            padding: 5px;
+            background: rgba(255, 0, 0, 0.2);
+            border-radius: 5px;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 12px;
+            width: 100%;
+            background: #ffffff;
+            color: #ff6821;
+            border-radius: 25px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .detect-btn {
+            margin-top: 5px;
+            background: #000000;
+            color: white;
+            border-radius: 15px;
+            padding: 8px;
+            font-size: 13px;
+            cursor: pointer;
+            border: none;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        .detect-btn:hover {
+            background: #333333;
+        }
+
+        .detect-btn:disabled {
+            background: #666666;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 10px 0;
+            color: #ffffff;
+        }
+
+        .success-message {
+            color: #d4edda;
+            background: rgba(40, 167, 69, 0.2);
+            padding: 10px;
+            border-radius: 5px;
+            margin: 10px 0;
+            display: none;
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="shop-container">
+            <h2 style="text-align:center;">Staff Registration</h2>
+
+            <div id="location-success" class="success-message">Location detected successfully!</div>
+            <div id="location-error" class="error" style="display:none;">Failed to detect location. Please enter manually.</div>
+            <div id="location-loading" class="loading">Detecting your location...</div>
+
+            <form action="/myapp/Staff_registration_Post/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <label>Name</label>
+                <input type="text" name="name" id="name" oninput="checkDuplicate('name')" required>
+                <div id="nameErr" class="error">Name already exists</div>
+
+                <label>Place</label>
+                <input type="text" name="place" id="place" required>
+                <button type="button" class="detect-btn" onclick="detectLocation()" id="detect-btn">
+                    Detect Location Automatically
+                </button>
+
+                <label>Post</label>
+                <input type="text" name="post" id="post" required>
+
+                <label>Pin</label>
+                <input type="text" name="pin" id="pin" pattern="[0-9]{6}" title="Please enter a valid 6-digit PIN code" required>
+
+                <label>Phone</label>
+                <input type="tel" name="phone_no" id="phone_no"
+                       pattern="[0-9]{10,15}"
+                       oninput="checkDuplicate('phone_no')" required>
+                <div id="phone_noErr" class="error">Phone number already exists</div>
+
+                <label>Profile Image</label>
+                <input type="file" name="profile" accept="image/*" required>
+
+                <label>Password</label>
+                <input type="password" name="password" id="password" minlength="6" required>
+
+                <label>Confirm Password</label>
+                <input type="password" name="confirm_password" id="confirm_password"
+                       oninput="checkPassword()" required>
+                <div id="passErr" class="error">Passwords do not match</div>
+
+                <button type="submit">Register Staff</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function showLoading(show) {
+            document.getElementById('location-loading').style.display = show ? 'block' : 'none';
+            document.getElementById('detect-btn').disabled = show;
+            if (show) {
+                document.getElementById('detect-btn').innerHTML = 'Detecting...';
+            } else {
+                document.getElementById('detect-btn').innerHTML = 'Detect Location Automatically';
+            }
+        }
+
+        function showMessage(elementId, show) {
+            document.getElementById(elementId).style.display = show ? 'block' : 'none';
+        }
+
+        async function detectLocation() {
+            // Clear previous messages
+            showMessage('location-success', false);
+            showMessage('location-error', false);
+
+            if (!navigator.geolocation) {
+                alert("Geolocation is not supported by your browser. Please enter location manually.");
+                return;
+            }
+
+            showLoading(true);
+
+            try {
+                // Get current position
+                const position = await new Promise((resolve, reject) => {
+                    navigator.geolocation.getCurrentPosition(resolve, reject, {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    });
+                });
+
+                const lat = position.coords.latitude;
+                const lon = position.coords.longitude;
+
+                // Use OpenStreetMap Nominatim API for reverse geocoding
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${lat}&lon=${lon}`
+                );
+
+                if (!response.ok) {
+                    throw new Error('Geocoding service failed');
+                }
+
+                const data = await response.json();
+
+                if (data.address) {
+                    const address = data.address;
+
+                    // Set place (city, town, or village)
+                    document.getElementById("place").value =
+                        address.city ||
+                        address.town ||
+                        address.village ||
+                        address.county ||
+                        address.state ||
+                        "";
+
+                    // Set post (suburb, district, or neighborhood)
+                    document.getElementById("post").value =
+                        address.suburb ||
+                        address.district ||
+                        address.neighbourhood ||
+                        address.region ||
+                        "";
+
+                    // Set pin (postcode)
+                    document.getElementById("pin").value = address.postcode || "";
+
+                    showMessage('location-success', true);
+
+                    // Hide success message after 3 seconds
+                    setTimeout(() => {
+                        showMessage('location-success', false);
+                    }, 3000);
+                } else {
+                    throw new Error('No address found');
+                }
+            } catch (error) {
+                console.error('Geolocation error:', error);
+                showMessage('location-error', true);
+
+                // Try alternative method using IP-based location
+                try {
+                    const ipResponse = await fetch('https://ipapi.co/json/');
+                    const ipData = await ipResponse.json();
+
+                    document.getElementById("place").value = ipData.city || "";
+                    document.getElementById("post").value = ipData.region || "";
+                    document.getElementById("pin").value = ipData.postal || "";
+
+                    showMessage('location-success', true);
+                    setTimeout(() => {
+                        showMessage('location-success', false);
+                    }, 3000);
+                } catch (ipError) {
+                    console.error('IP location error:', ipError);
+                    alert("Could not detect location automatically. Please enter manually.");
+                }
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function checkDuplicate(field) {
+            const value = document.getElementById(field).value;
+            const err = document.getElementById(field + "Err");
+
+            if (value.trim() === "") {
+                err.style.display = "none";
+                return;
+            }
+
+            fetch(`/myapp/check_staff_exists/?field=${field}&value=${encodeURIComponent(value)}`)
+                .then(res => res.json())
+                .then(data => {
+                    err.style.display = data.exists ? "block" : "none";
+                })
+                .catch(error => {
+                    console.error('Error checking duplicate:', error);
+                });
+        }
+
+        function checkPassword() {
+            const p1 = document.getElementById("password").value;
+            const p2 = document.getElementById("confirm_password").value;
+            const err = document.getElementById("passErr");
+            err.style.display = (p1 !== p2) ? "block" : "none";
+        }
+
+        // Add input validation
+        document.getElementById('phone_no').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('pin').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+        });
+
+        // Form submission validation
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const p1 = document.getElementById("password").value;
+            const p2 = document.getElementById("confirm_password").value;
+
+            if (p1 !== p2) {
+                e.preventDefault();
+                document.getElementById("passErr").style.display = "block";
+                document.getElementById("confirm_password").focus();
+                return false;
+            }
+
+            // Check for any duplicate errors
+            const errors = document.querySelectorAll('.error[style*="block"]');
+            if (errors.length > 0) {
+                e.preventDefault();
+                alert("Please fix the errors before submitting.");
+                return false;
+            }
+        });
+    </script>
+
+{% endblock %}

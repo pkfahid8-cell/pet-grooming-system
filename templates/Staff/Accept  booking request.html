@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Grooming Bookings</h2>
+
+<table border="1" cellpadding="10" cellspacing="0">
+
+    <tr>
+        <th>User</th>
+        <th>Service</th>
+        <th>Pet Name</th>
+        <th>Pet Type</th>
+        <th>Date</th>
+        <th>Time</th>
+        <th>Status</th>
+    </tr>
+
+    {% for b in data %}
+        <tr>
+            <td>{{ b.USER.cname }}</td>
+            <td>{{ b.SERVICE.service_name }}</td>
+            <td>{{ b.pet_name }}</td>
+            <td>{{ b.pet_type }}</td>
+            <td>{{ b.date }}</td>
+            <td>{{ b.time }}</td>
+            <td>
+            <td><a href="/myapp/accepted_booking/{{ b.id }}">Approve</a></td>
+            </td>
+
+
+        </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>

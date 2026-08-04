@@ -1,0 +1,161 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<style>
+
+    body {
+        background: #f1f3f5 !important;
+        font-family: "Poppins", sans-serif;
+    }
+
+    html {
+        scroll-behavior: smooth !important;
+    }
+
+    .edit-wrapper {
+        max-width: 650px;
+        margin: 40px auto;
+    }
+
+    .card-custom {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 25px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(25px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .title-box {
+        background: linear-gradient(135deg, #ff512f, #ff914d);
+        padding: 15px;
+        text-align: center;
+        border-radius: 14px;
+        color: white;
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 22px;
+    }
+
+    label {
+        font-weight: 600;
+        color: #444;
+        margin-bottom: 5px;
+    }
+
+    /* Input Styles */
+    input[type="text"],
+    textarea,
+    input[type="file"] {
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: 2px solid #ffaa70;
+        transition: 0.3s;
+    }
+
+    input:focus,
+    textarea:focus {
+        border-color: #ff6b00;
+        box-shadow: 0 0 10px rgba(255,100,0,0.35);
+    }
+
+    textarea {
+        min-height: 120px;
+        resize: vertical;
+    }
+
+    /* Image Preview */
+    .preview-img {
+        width: 130px;
+        height: 130px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #ff6b00;
+        margin-bottom: 15px;
+    }
+
+    /* Update Button */
+    .btn-orange {
+        background: linear-gradient(135deg, #ff6b00, #ff8500);
+        border: none;
+        padding: 10px;
+        width: 100%;
+        font-size: 17px;
+        font-weight: 700;
+        color: white;
+        border-radius: 10px;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    .btn-orange:hover {
+        background: linear-gradient(135deg, #ff4f00, #ff6b00);
+        transform: translateY(-2px);
+    }
+
+</style>
+
+
+<div class="edit-wrapper">
+
+    <div class="title-box">
+        Edit Grooming Service
+    </div>
+
+    <div class="card-custom">
+
+        <form action="/myapp/edit_grooming_services_post/" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <input type="hidden" name="groom_id" value="{{ grooming.id }}">
+
+            <!-- Service Name -->
+            <div class="mb-3">
+                <label>Service Name</label>
+                <input type="text" name="service_name" value="{{ grooming.service_name }}" required>
+            </div>
+
+            <!-- Description -->
+            <div class="mb-3">
+                <label>Description</label>
+                <textarea name="description" required>{{ grooming.description }}</textarea>
+            </div>
+
+            <!-- Price -->
+            <div class="mb-3">
+                <label>Price</label>
+                <input type="text" name="price" value="{{ grooming.price }}" required>
+            </div>
+            <div class="mb-3">
+                <label>Time</label>
+                <input type="text" name="time" value="{{ grooming.time }}" required>
+            </div>
+
+            <!-- Current Image -->
+            <label>Current Image:</label><br>
+            {% if grooming.image %}
+                <img src="{{ grooming.image }}" class="preview-img">
+            {% else %}
+                <p>No Image Available</p>
+            {% endif %}
+
+            <!-- Change Image -->
+            <div class="mb-3">
+                <label>Change Image (optional)</label>
+                <input type="file" name="image" accept="image/*">
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn-orange" >Update Service</button>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

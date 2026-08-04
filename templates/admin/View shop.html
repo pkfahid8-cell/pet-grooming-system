@@ -1,0 +1,260 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+    <style>
+
+        /* GLOBAL SMOOTH SCROLL */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f8f8f8 !important;
+            margin: 0;
+            padding: 0;
+            transition: all 0.7s ease-in-out !important;
+        }
+
+        .dataTables_wrapper .dataTables_filter {
+            position: relative !important;
+            left: 300px !important;
+        }
+
+        .smooth-scroll {
+            transition: all 0.7s ease-in-out !important;
+        }
+
+        /* PAGE BACKGROUND */
+        .page-wrapper {
+            min-height: 100vh;
+            padding: 40px 20px;
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* PAGE TITLE */
+        .page-title {
+            text-align: center;
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 35px;
+            color: #333;
+        }
+
+        /* OUTER ORANGE BOX */
+        .outer-box {
+            max-width: 1150px;
+            margin: auto;
+            background: #ff6d33;
+            padding: 25px;
+            border-radius: 30px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.15);
+        }
+
+        /* INNER WHITE BOX */
+        .inner-box {
+            background: #fff6f0;
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
+        }
+
+        .table {
+            width: max-content;
+            min-width: 100%;
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .table thead {
+            background: #222;
+            color: white;
+        }
+
+        .table thead th {
+            padding: 12px 20px;
+        }
+
+        .table tbody td {
+            padding: 12px 18px;
+            color: #000;
+        }
+
+        /* DATATABLE INPUT */
+        .dataTables_wrapper .dataTables_filter input {
+            border-radius: 20px;
+            padding: 6px 12px;
+            border: 2px solid #ff512f;
+        }
+
+        .dataTables_wrapper .dataTables_length select {
+            border-radius: 10px;
+        }
+
+        /* IMAGES */
+        .table img {
+            width: 70px;
+            height: 70px;
+            border-radius: 12px;
+            border: 2px solid #ff6d33;
+            object-fit: cover;
+        }
+
+        /* STATUS COLORS */
+        .status-approved {
+            color: green;
+            font-weight: 700;
+        }
+
+        .status-pending {
+            color: orange;
+            font-weight: 700;
+        }
+
+        .status-rejected {
+            color: red;
+            font-weight: 700;
+        }
+
+        /* ACTION BUTTONS */
+        .approve-btn, .reject-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            margin-right: 5px;
+            font-size: 0.9rem;
+        }
+
+        .approve-btn {
+            background: green;
+        }
+
+        .reject-btn {
+            background: red;
+        }
+
+    </style>
+
+
+    <div class="page-wrapper" id="shopBox">
+
+        <h1 class="page-title">Staff Details</h1>
+
+        <div class="outer-box">
+            <div class="inner-box">
+
+                <div class="table-scroll">
+                    <table class="table table-bordered" id="shopTable">
+                        <thead>
+                        <tr>
+                            <th>Staff Name</th>
+                            <th>Place</th>
+                            <th>Pin Name</th>
+                            <th>Post</th>
+                            <th>Phone</th>
+                            <th>Staff Image</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for i in data %}
+                            <tr>
+                                <td>{{ i.name }}</td>
+                                <td>{{ i.place }}</td>
+                                <td>{{ i.pin }}</td>
+                                <td>{{ i.post }}</td>
+                                <td>{{ i.phone_no }}</td>
+                                <td><img src="{{ i.profile }}"></td>
+                                <td>
+                                    {% if i.status == "approved" %}
+                                        <span class="status-approved">Approved</span>
+
+                                    {% elif i.status == "pending" %}
+                                        <div class="action-buttons" id="action-{{ i.id }}">
+                                            <a href="/myapp/Approve_shop/{{ i.id }}#a.3" class="approve-btn">
+                                                Approve
+                                            </a>
+                                            <br>
+                                            <br>
+                                            <a href="/myapp/Reject_shop/{{ i.id }}#a.3"
+                                               class="reject-btn"
+                                               onclick="return confirm('Are you sure you want to reject this shop?');">
+                                                Reject
+                                            </a>
+                                        </div>
+
+
+                                        <span class="status-text" id="status-{{ i.id }}" style="display:none;"></span>
+
+                                    {% else %}
+                                        <span class="status-rejected">Rejected</span>
+                                    {% endif %}
+                                </td>
+
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#shopTable').DataTable({
+                pageLength: 3
+            });
+        });
+
+        /* APPROVE BUTTON CLICK */
+        $(document).on("click", ".approve-btn", function () {
+            let id = $(this).data("id");
+
+            $("#action-" + id).hide();
+            $("#status-" + id)
+                .text("Approved")
+                .addClass("status-approved")
+                .show();
+        });
+
+        /* REJECT BUTTON CLICK */
+        $(document).on("click", ".reject-btn", function () {
+            let id = $(this).data("id");
+
+            $("#action-" + id).hide();
+            $("#status-" + id)
+                .text("Rejected")
+                .addClass("status-rejected")
+                .show();
+        });
+
+    </script>
+
+{% endblock %}

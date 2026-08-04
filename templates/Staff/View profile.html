@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ data.name }} - Staff Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* ========== RESET & BASE ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ========== HEADER ========== */
+        .main-header {
+            background: linear-gradient(135deg, #ff5e14 0%, #ff8a3d 100%);
+            padding: 20px 40px;
+            box-shadow: 0 4px 20px rgba(255, 94, 20, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: white;
+        }
+
+        .site-title {
+            color: white;
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 16px;
+            padding: 10px 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .user-badge {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 600;
+        }
+
+        .user-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 20px;
+        }
+
+        /* ========== PROFILE CARD ========== */
+        .profile-card {
+            background: white;
+            width: 100%;
+            max-width: 550px;
+            border-radius: 24px;
+            padding: 40px 35px;
+            text-align: center;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+            position: relative;
+            overflow: hidden;
+            animation: cardAppear 0.8s ease-out;
+        }
+
+        @keyframes cardAppear {
+            0% {
+                opacity: 0;
+                transform: translateY(40px) scale(0.95);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #ff5e14, #ff8a3d, #ffa85c);
+        }
+
+        .profile-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 94, 20, 0.03));
+            pointer-events: none;
+        }
+
+        /* ========== PROFILE PICTURE ========== */
+        .profile-pic-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 25px;
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 8px solid #ff8a3d;
+            box-shadow: 0 15px 35px rgba(255, 138, 61, 0.4);
+            transition: all 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .profile-pic:hover {
+            border-color: #ff5e14;
+            transform: scale(1.05) rotate(5deg);
+        }
+
+        .profile-glow {
+            position: absolute;
+            top: -15px;
+            left: -15px;
+            right: -15px;
+            bottom: -15px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff5e14, #ff8a3d, #ffa85c);
+            filter: blur(25px);
+            opacity: 0.4;
+            animation: glowPulse 3s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                opacity: 0.3;
+                transform: scale(0.95);
+            }
+            100% {
+                opacity: 0.6;
+                transform: scale(1.05);
+            }
+        }
+
+        .profile-ring {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            right: -12px;
+            bottom: -12px;
+            border: 3px solid rgba(255, 94, 20, 0.25);
+            border-radius: 50%;
+            animation: ringRotate 20s linear infinite;
+        }
+
+        @keyframes ringRotate {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* ========== STAFF NAME ========== */
+        .staff-name {
+            font-size: 32px;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: #111;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 12px;
+        }
+
+        .staff-name::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #ff5e14, #ff8a3d);
+            border-radius: 2px;
+        }
+
+        .staff-title {
+            font-size: 16px;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 35px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ========== INFO SECTION ========== */
+        .info-section {
+            background: linear-gradient(135deg, #fff9f5 0%, #fff0e6 100%);
+            border-radius: 18px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid #ffe5d6;
+            box-shadow: 0 8px 25px rgba(255, 94, 20, 0.1);
+            text-align: left;
+        }
+
+        .info-group {
+            margin-bottom: 20px;
+        }
+
+        .group-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ff5e14;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #ff8a3d;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+
+        .info-row:not(:last-child) {
+            border-bottom: 1px solid rgba(255, 138, 61, 0.2);
+        }
+
+        .label {
+            font-size: 14px;
+            font-weight: 700;
+            color: #ff5e14;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .label i {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .value {
+            font-size: 17px;
+            font-weight: 600;
+            color: #222;
+            background: white;
+            padding: 8px 16px;
+            border-radius: 10px;
+            border: 1px solid #ffd9c2;
+            min-width: 200px;
+            text-align: right;
+            flex: 1;
+        }
+
+        /* ========== STATUS BADGE ========== */
+
+
+        /* ========== ACTION BUTTONS ========== */
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 35px;
+        }
+
+        .btn-edit {
+            background: linear-gradient(135deg, #ff5e14, #ff8a3d);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(255, 94, 20, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-edit::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .btn-edit:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 94, 20, 0.6);
+        }
+
+        .btn-edit:hover::before {
+            left: 100%;
+        }
+
+        .btn-back {
+            background: linear-gradient(135deg, #2d2d2d, #444);
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            border-radius: 15px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            text-decoration: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-back:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            background: linear-gradient(135deg, #444, #555);
+        }
+
+        /* ========== FOOTER ========== */
+        .main-footer {
+            background: linear-gradient(135deg, #111 0%, #222 100%);
+            padding: 40px 0 30px;
+            margin-top: auto;
+            border-top: 4px solid #ff5e14;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo i {
+            color: #ff8a3d;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .footer-link {
+            color: #aaa;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #ff8a3d;
+        }
+
+        .copyright {
+            color: #777;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: center;
+            width: 100%;
+            padding-top: 20px;
+            border-top: 1px solid #333;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .main-header {
+                padding: 15px 20px;
+            }
+
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .nav-links {
+                width: 100%;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .nav-link {
+                padding: 8px 15px;
+                font-size: 14px;
+            }
+
+            .main-content {
+                padding: 40px 15px;
+            }
+
+            .profile-card {
+                padding: 30px 25px;
+                max-width: 500px;
+            }
+
+            .profile-pic-container {
+                width: 130px;
+                height: 130px;
+            }
+
+            .staff-name {
+                font-size: 28px;
+            }
+
+            .info-section {
+                padding: 20px;
+            }
+
+            .value {
+                min-width: 150px;
+                font-size: 15px;
+                padding: 6px 12px;
+            }
+
+            .action-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .btn-edit, .btn-back {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 20px;
+            }
+
+            .footer-links {
+                justify-content: center;
+                flex-wrap: wrap;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .profile-pic-container {
+                width: 110px;
+                height: 110px;
+            }
+
+            .staff-name {
+                font-size: 24px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+
+            .value {
+                width: 100%;
+                text-align: left;
+                min-width: auto;
+            }
+
+            .label {
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    {% include 'Staff/staff_header.html' %}
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="profile-card">
+            <!-- Profile Picture -->
+            <div class="profile-pic-container">
+                <div class="profile-glow"></div>
+                <div class="profile-ring"></div>
+                {% if data.profile %}
+                <img src="{{ data.profile }}" class="profile-pic" alt="{{ data.name }}">
+                {% else %}
+                <img src="https://ui-avatars.com/api/?name={{ data.name|urlencode }}&background=ff8a3d&color=fff&size=256&font-size=0.5&bold=true"
+                     class="profile-pic"
+                     alt="{{ data.name }}">
+                {% endif %}
+            </div>
+
+            <!-- Staff Name & Title -->
+            <h1 class="staff-name">{{ data.name }}</h1>
+            <div class="staff-title">STAFF PROFILE</div>
+
+            <!-- Information Section -->
+            <div class="info-section">
+                <!-- Personal Information Group -->
+                <div class="info-group">
+                    <div class="group-title">Personal Information</div>
+
+                    <!-- Staff ID -->
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-id-card"></i>
+                            STAFF ID
+                        </div>
+                        <div class="value">#{{ data.id|stringformat:"06d" }}</div>
+                    </div>
+
+                    <!-- Name -->
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-user"></i>
+                            FULL NAME
+                        </div>
+                        <div class="value">{{ data.name }}</div>
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-phone-alt"></i>
+                            PHONE NUMBER
+                        </div>
+                        <div class="value">{{ data.phone_no }}</div>
+                    </div>
+
+                    <!-- Email (if available) -->
+                    {% if data.email %}
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-envelope"></i>
+                            EMAIL
+                        </div>
+                        <div class="value">{{ data.email }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Address Information Group -->
+                <div class="info-group">
+                    <div class="group-title">Address Details</div>
+
+                    <!-- Place -->
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-map-marker-alt"></i>
+                            PLACE
+                        </div>
+                        <div class="value">{{ data.place }}</div>
+                    </div>
+
+                    <!-- Post -->
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-location-dot"></i>
+                            POST
+                        </div>
+                        <div class="value">{{ data.post }}</div>
+                    </div>
+
+                    <!-- Pin -->
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-map-pin"></i>
+                            PIN CODE
+                        </div>
+                        <div class="value">{{ data.pin }}</div>
+                    </div>
+                </div>
+
+                <!-- Employment Information Group -->
+                <div class="info-group">
+                    <div class="group-title"></div>
+
+                    <!-- Department (if available) -->
+                    {% if data.department %}
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-building"></i>
+                            DEPARTMENT
+                        </div>
+                        <div class="value">{{ data.department }}</div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Position (if available) -->
+                    {% if data.position %}
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-briefcase"></i>
+                            POSITION
+                        </div>
+                        <div class="value">{{ data.position }}</div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Joining Date (if available) -->
+                    {% if data.joining_date %}
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-calendar-alt"></i>
+                            JOINING DATE
+                        </div>
+                        <div class="value">{{ data.joining_date }}</div>
+                    </div>
+                    {% endif %}
+
+                    <!-- Status -->
+
+                </div>
+
+                <!-- Additional Information (if any) -->
+                {% if data.additional_info %}
+                <div class="info-group">
+                    <div class="group-title">Additional Information</div>
+                    <div class="info-row">
+                        <div class="label">
+                            <i class="fas fa-info-circle"></i>
+                            NOTES
+                        </div>
+                        <div class="value">{{ data.additional_info }}</div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/myapp/edit_profile_get/{{ data.id }}" class="btn-edit">
+                    <i class="fas fa-edit"></i>
+                    EDIT PROFILE
+                </a>
+                <a href="javascript:history.back()" class="btn-back">
+                    <i class="fas fa-arrow-left"></i>
+                    GO BACK
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    {% include 'footer.html' %}
+
+    <script>
+        // Profile picture hover effect
+        const profilePic = document.querySelector('.profile-pic');
+        if (profilePic) {
+            profilePic.addEventListener('mouseenter', () => {
+                document.querySelector('.profile-glow').style.opacity = '0.8';
+            });
+
+            profilePic.addEventListener('mouseleave', () => {
+                document.querySelector('.profile-glow').style.opacity = '0.4';
+            });
+
+            // Add ripple effect to profile picture
+            profilePic.addEventListener('click', function(e) {
+                const ripple = document.createElement('span');
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.cssText = `
+                    position: absolute;
+                    border-radius: 50%;
+                    background: rgba(255, 94, 20, 0.4);
+                    transform: scale(0);
+                    animation: rippleEffect 0.6s linear;
+                    width: ${size}px;
+                    height: ${size}px;
+                    top: ${y}px;
+                    left: ${x}px;
+                    pointer-events: none;
+                    z-index: 1;
+                `;
+
+                this.parentElement.appendChild(ripple);
+                setTimeout(() => ripple.remove(), 600);
+            });
+        }
+
+        // Add ripple animation keyframes
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes rippleEffect {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Button click animation
+        document.querySelectorAll('.btn-edit, .btn-back').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 200);
+            });
+        });
+
+        // Page load animation
+        document.addEventListener('DOMContentLoaded', () => {
+            const elements = document.querySelectorAll('.info-row, .action-buttons');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    el.style.transition = 'all 0.6s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, 300 + (index * 100));
+            });
+
+            // Animate groups
+            const groups = document.querySelectorAll('.info-group');
+            groups.forEach((group, index) => {
+                group.style.opacity = '0';
+                group.style.transform = 'translateX(-20px)';
+
+                setTimeout(() => {
+                    group.style.transition = 'all 0.8s ease';
+                    group.style.opacity = '1';
+                    group.style.transform = 'translateX(0)';
+                }, 200 + (index * 150));
+            });
+        });
+
+        // Format phone number for display
+        function formatPhoneNumber(phone) {
+            return phone.replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3');
+        }
+
+        // Apply phone number formatting if needed
+        const phoneElement = document.querySelector('.info-row .label i.fa-phone-alt')?.closest('.info-row')?.querySelector('.value');
+        if (phoneElement && phoneElement.textContent.match(/^\d{10}$/)) {
+            phoneElement.textContent = formatPhoneNumber(phoneElement.textContent);
+        }
+    </script>
+</body>
+</html>

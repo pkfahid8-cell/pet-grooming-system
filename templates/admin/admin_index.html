@@ -1,0 +1,914 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Animal - Admin Panel</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.png">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/css/magnific-popup.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/themify-icons.css">
+    <link rel="stylesheet" href="/static/css/nice-select.css">
+    <link rel="stylesheet" href="/static/css/flaticon.css">
+    <link rel="stylesheet" href="/static/css/gijgo.css">
+    <link rel="stylesheet" href="/static/css/animate.css">
+    <link rel="stylesheet" href="/static/css/slicknav.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <style>
+        /* ===== IMPROVED HEADER & MENU STYLES ===== */
+        .header-area {
+            position: relative;
+            z-index: 1000;
+        }
+
+        .main-header-area {
+            padding: 15px 0;
+            background: #fff;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo styling */
+        .logo {
+            height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 50px;
+            width: auto;
+        }
+
+        /* Main menu container */
+        .main-menu {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        /* Main navigation list */
+        #navigation {
+            display: flex;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            gap: 30px;
+        }
+
+        /* Main menu items */
+        #navigation > li {
+            position: relative;
+        }
+
+        #navigation > li > a {
+            font-size: 15px !important;
+            font-weight: 600 !important;
+            color: #333 !important;
+            text-decoration: none;
+            padding: 10px 0;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: all 0.3s ease;
+        }
+
+        #navigation > li > a:hover {
+            color: #007bff !important;
+        }
+
+        #navigation > li > a i {
+            font-size: 12px;
+            margin-left: 3px;
+        }
+
+        /* Submenu styling */
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 220px;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+            border-radius: 5px;
+            padding: 8px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(15px);
+            transition: all 0.3s ease;
+            z-index: 1000;
+            list-style: none;
+            margin: 0;
+        }
+
+        .submenu li {
+            position: relative;
+        }
+
+        .submenu li a {
+            font-size: 14px !important;
+            font-weight: 500 !important;
+            padding: 10px 20px !important;
+            white-space: nowrap !important;
+            display: block;
+            color: #333 !important;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .submenu li a:hover {
+            background: #f8f9fa;
+            color: #007bff !important;
+            border-left: 3px solid #007bff;
+            padding-left: 17px !important;
+        }
+
+        /* Submenu divider for grouping */
+        .submenu-divider {
+            height: 1px;
+            background: #eaeaea;
+            margin: 8px 15px;
+        }
+
+        /* Submenu group heading */
+        .submenu-heading {
+            font-size: 12px !important;
+            font-weight: 700 !important;
+            color: #666 !important;
+            padding: 8px 20px 4px 20px !important;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 5px;
+            border-bottom: 1px dashed #eee;
+        }
+
+        .submenu-heading:first-child {
+            margin-top: 0;
+        }
+
+        /* Show submenu on hover */
+        #navigation > li:hover > .submenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Active menu item */
+        #navigation > li.active > a {
+            color: #007bff !important;
+        }
+
+        /* Mobile menu button */
+        .mobile_menu {
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .mobile_menu button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Content area */
+        .content-wrapper {
+            padding: 60px 20px;
+            min-height: 60vh;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 20px;
+            margin: 60px auto;
+            max-width: 1200px;
+            box-shadow: 0 0 25px rgba(0, 255, 0, 0.1);
+        }
+
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            #navigation {
+                flex-direction: column;
+                gap: 0;
+                background: #fff;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                display: none;
+            }
+
+            #navigation.show {
+                display: flex;
+            }
+
+            #navigation > li {
+                border-bottom: 1px solid #eee;
+            }
+
+            #navigation > li > a {
+                padding: 15px 20px;
+                display: block;
+            }
+
+            .submenu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                box-shadow: none;
+                display: none;
+                padding-left: 20px;
+                background: #f9f9f9;
+                min-width: auto;
+            }
+
+            .submenu.show {
+                display: block;
+            }
+
+            .submenu li a {
+                padding: 10px 30px !important;
+            }
+
+            .submenu-heading {
+                padding: 8px 30px 4px 30px !important;
+            }
+
+            .submenu-divider {
+                margin: 8px 30px;
+            }
+
+            .main-menu {
+                height: auto;
+                justify-content: flex-start;
+            }
+
+            .mobile_menu {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 993px) {
+            .mobile_menu {
+                display: none !important;
+            }
+        }
+
+        /* Header top area */
+        .header-top_area {
+            background: #f8f9fa;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        .short_contact_list ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            gap: 20px;
+        }
+
+        .social_media_links {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .social_media_links a {
+            color: #666;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        .social_media_links a:hover {
+            color: #007bff;
+        }
+
+        /* Sticky header */
+        #sticky-header.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-area">
+
+        <div class="header-top_area">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-lg-6 col-md-8">
+                        <div class="short_contact_list">
+                            <ul>
+                                <li><a href="#">+880 4664 216</a></li>
+                                <li><a href="#">Mon - Sat 10:00 - 7:00</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 col-md-4">
+                        <div class="social_media_links">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            <a href="#"><i class="fa fa-google-plus"></i></a>
+                            <a href="#"><i class="fa fa-linkedin"></i></a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="sticky-header" class="main-header-area">
+            <div class="container">
+                <div class="row align-items-center">
+
+                    <div class="col-xl-3 col-lg-3 col-6">
+                        <div class="logo">
+                            <a href="/myapp/adminhome">
+                                <img src="/static/img/logo.png" alt="">
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="col-xl-9 col-lg-9 d-none d-lg-block">
+                        <div class="main-menu">
+                            <nav>
+                                <ul id="navigation">
+
+                                    <li><a href="/myapp/adminhome">HOME</a></li>
+
+                                    <!-- STAFF MANAGEMENT -->
+                                    <li>
+                                        <a href="#">STAFF <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li class="submenu-heading">Staff Management</li>
+                                            <li><a href="/myapp/view_shop/#a">Manage STAFFS</a></li>
+                                            <li><a href="/myapp/view_approved_and_rejected/#a">Approve/Reject STAFFS</a></li>
+
+                                            <div class="submenu-divider"></div>
+                                            <li class="submenu-heading">Pet Management</li>
+                                            <li><a href="/myapp/add_pet_type_get/#a">Add Pet Type</a></li>
+
+                                            <div class="submenu-divider"></div>
+                                            <li class="submenu-heading">Reviews & Ratings</li>
+                                            <li><a href="/myapp/view_rating_review/#a">View Reviews & Ratings</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- CUSTOMER MANAGEMENT -->
+                                    <li>
+                                        <a href="#">CUSTOMER <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li class="submenu-heading">Customer Management</li>
+                                            <li><a href="/myapp/view_cutomer/#a">View Customers</a></li>
+                                            <li><a href="/myapp/view_delivery_address/#a">View Delivery Address</a></li>
+                                            <li><a href="/myapp/view_complaint/#a">View Complaints</a></li>
+
+                                            <div class="submenu-divider"></div>
+                                            <li class="submenu-heading">Category Management</li>
+                                            <li><a href="/myapp/add_category_get/#a">Add Category</a></li>
+
+                                            <div class="submenu-divider"></div>
+                                            <li class="submenu-heading">Product Management</li>
+                                            <li><a href="/myapp/add_product_get/#a">Add Product</a></li>
+                                            <li><a href="/myapp/View_product/#a">View Products</a></li>
+
+                                            <div class="submenu-divider"></div>
+                                            <li class="submenu-heading">Grooming Management</li>
+                                            <li><a href="/myapp/add_grooming_get/#a">Add Grooming Service</a></li>
+                                            <li><a href="/myapp/view_grooming/#a">View Grooming Services</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- PASSWORD MANAGEMENT -->
+                                    <li>
+                                        <a href="#">REPORT <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/admin_generate_report/#a">Report</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#">PASSWORD <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/change_password_admin/#a">Change Password</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li><a href="/myapp/logout_get">LOGOUT</a></li>
+
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- mobile menu -->
+                    <div class="col-12 d-lg-none">
+                        <div class="mobile_menu">
+                            <button id="mobileMenuToggle">
+                                <i class="fa fa-bars"></i> Menu
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</header>
+
+
+<!-- slider -->
+<div class="slider_area">
+    <div class="single_slider slider_bg_1 d-flex align-items-center">
+        <div class="container">
+
+            <div class="row">
+                <div class="col-lg-5 col-md-6">
+                    <div class="slider_text">
+                        <h3>We Care <br> <span>Your Pets</span></h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <a href="contact.html" class="boxed-btn4">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="dog_thumb d-none d-lg-block">
+            <img src="/static/img/banner/dog.png" alt="">
+        </div>
+    </div>
+</div>
+
+<div id="a"></div>
+
+<div class="content-wrapper">
+    {% block body %}
+        <!-- Page specific content will appear here -->
+    {% endblock %}
+</div>
+
+
+<!-- pet care section -->
+<div class="pet_care_area">
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-5 col-md-6">
+                <div class="pet_thumb">
+                    <img src="/static/img/about/pet_care.png" alt="">
+                </div>
+            </div>
+
+            <div class="col-lg-6 offset-lg-1 col-md-6">
+                <div class="pet_info">
+
+                    <div class="section_title">
+                        <h3><span>We care your pet </span> <br> As you care</h3>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+                        <a href="about.html" class="boxed-btn3">About Us</a>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- adopt area -->
+<div class="adapt_area">
+    <div class="container">
+        <div class="row justify-content-between align-items-center">
+
+            <div class="col-lg-5">
+                <div class="adapt_help">
+                    <div class="section_title">
+                        <h3><span>We need your</span> help Adopt Us</h3>
+                        <p>Lorem ipsum dolor sit amet...</p>
+                        <a href="contact.html" class="boxed-btn3">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="adapt_about">
+
+                    <div class="row align-items-center">
+
+                        <div class="col-lg-6 col-md-6">
+                            <div class="single_adapt text-center">
+                                <img src="/static/img/adapt_icon/1.png" alt="">
+                                <div class="adapt_content">
+                                    <h3 class="counter">452</h3>
+                                    <p>Pets Available</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-6">
+
+                            <div class="single_adapt text-center">
+                                <img src="/static/img/adapt_icon/3.png" alt="">
+                                <div class="adapt_content">
+                                    <h3><span class="counter">52</span>+</h3>
+                                    <p>Pets Available</p>
+                                </div>
+                            </div>
+
+                            <div class="single_adapt text-center">
+                                <img src="/static/img/adapt_icon/2.png" alt="">
+                                <div class="adapt_content">
+                                    <h3><span class="counter">52</span>+</h3>
+                                    <p>Pets Available</p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<!-- testimonial -->
+<div class="testmonial_area">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                <div class="textmonial_active owl-carousel">
+
+                    <div class="testmonial_wrap">
+                        <div class="single_testmonial d-flex align-items-center">
+                            <div class="test_thumb"><img src="/static/img/testmonial/1.png" alt=""></div>
+                            <div class="test_content">
+                                <h4>Jhon Walker</h4>
+                                <span>Head of web design</span>
+                                <p>Lorem ipsum dolor sit...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testmonial_wrap">
+                        <div class="single_testmonial d-flex align-items-center">
+                            <div class="test_thumb"><img src="/static/img/testmonial/1.png" alt=""></div>
+                            <div class="test_content">
+                                <h4>Jhon Walker</h4>
+                                <span>Head of web design</span>
+                                <p>Lorem ipsum dolor sit...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="testmonial_wrap">
+                        <div class="single_testmonial d-flex align-items-center">
+                            <div class="test_thumb"><img src="/static/img/testmonial/1.png" alt=""></div>
+                            <div class="test_content">
+                                <h4>Jhon Walker</h4>
+                                <span>Head of web design</span>
+                                <p>Lorem ipsum dolor sit...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- team -->
+<div class="team_area">
+    <div class="container">
+
+        <div class="row justify-content-center ">
+            <div class="col-lg-6 col-md-10">
+                <div class="section_title text-center mb-95">
+                    <h3>Our Team</h3>
+                    <p>Lorem ipsum dolor sit amet...</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-4 col-md-6">
+                <div class="single_team">
+                    <div class="thumb"><img src="/static/img/team/1.png" alt=""></div>
+                    <div class="member_name text-center">
+                        <h4>Rala Emaia</h4>
+                        <p>Senior Director</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="single_team">
+                    <div class="thumb"><img src="/static/img/team/2.png" alt=""></div>
+                    <div class="member_name text-center">
+                        <h4>John Smith</h4>
+                        <p>Senior Director</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <div class="single_team">
+                    <div class="thumb"><img src="/static/img/team/3.png" alt=""></div>
+                    <div class="member_name text-center">
+                        <h4>Rala Emaia</h4>
+                        <p>Senior Director</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<!-- contact CTA -->
+<div class="contact_anipat anipat_bg_1">
+    <div class="container">
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+
+                <div class="contact_text text-center">
+
+                    <div class="section_title text-center">
+                        <h3>Why go with Anipat?</h3>
+                        <p>Because we know that even the best technology is only as good as the people behind it.</p>
+                    </div>
+
+                    <div class="contact_btn d-flex align-items-center justify-content-center">
+                        <a href="contact.html" class="boxed-btn4">Contact Us</a>
+                        <p>Or <a href="#"> +880 4664 216</a></p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- footer -->
+<footer class="footer">
+    <div class="footer_top">
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-xl-3 col-md-6 col-lg-3">
+                    <div class="footer_widget">
+                        <h3>Contact Us</h3>
+                        <ul class="address_line">
+                            <li>+555 0000 565</li>
+                            <li><a href="#">DemoMail@gmail.com</a></li>
+                            <li>700, Green Lane, New York, USA</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-lg-3">
+                    <div class="footer_widget">
+                        <h3>Our Services</h3>
+                        <ul class="links">
+                            <li><a href="#">Pet Insurance</a></li>
+                            <li><a href="#">Pet Surgeries</a></li>
+                            <li><a href="#">Pet Adoption</a></li>
+                            <li><a href="#">Dog Insurance</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-lg-3">
+                    <div class="footer_widget">
+                        <h3>Quick Links</h3>
+                        <ul class="links">
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Terms of Service</a></li>
+                            <li><a href="#">Knowledge Base</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-xl-3 col-md-6 col-lg-3 ">
+                    <div class="footer_widget">
+                        <div class="footer_logo">
+                            <a href="/myapp/adminhome"><img src="/static/img/logo.png" alt=""></a>
+                        </div>
+                        <p class="address_text">239 E 5th St, New York NY 10003</p>
+                        <div class="socail_links">
+                            <ul>
+                                <li><a href="#"><i class="ti-facebook"></i></a></li>
+                                <li><a href="#"><i class="ti-pinterest"></i></a></li>
+                                <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</footer>
+
+
+
+<!-- JS -->
+<script src="/static/js/vendor/modernizr-3.5.0.min.js"></script>
+<script src="/static/js/vendor/jquery-1.12.4.min.js"></script>
+<script src="/static/js/popper.min.js"></script>
+<script src="/static/js/bootstrap.min.js"></script>
+<script src="/static/js/owl.carousel.min.js"></script>
+<script src="/static/js/isotope.pkgd.min.js"></script>
+<script src="/static/js/ajax-form.js"></script>
+<script src="/static/js/waypoints.min.js"></script>
+<script src="/static/js/jquery.counterup.min.js"></script>
+<script src="/static/js/imagesloaded.pkgd.min.js"></script>
+<script src="/static/js/scrollIt.js"></script>
+<script src="/static/js/jquery.scrollUp.min.js"></script>
+<script src="/static/js/wow.min.js"></script>
+<script src="/static/js/nice-select.min.js"></script>
+<script src="/static/js/jquery.slicknav.min.js"></script>
+<script src="/static/js/jquery.magnific-popup.min.js"></script>
+<script src="/static/js/plugins.js"></script>
+<script src="/static/js/gijgo.min.js"></script>
+<script src="/static/js/contact.js"></script>
+<script src="/static/js/jquery.ajaxchimp.min.js"></script>
+<script src="/static/js/jquery.form.js"></script>
+<script src="/static/js/jquery.validate.min.js"></script>
+<script src="/static/js/mail-script.js"></script>
+<script src="/static/js/main.js"></script>
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+    $(document).ready(function () {
+        // Mobile menu toggle
+        $('#mobileMenuToggle').click(function() {
+            $('#navigation').toggleClass('show');
+        });
+
+        // Mobile submenu toggle
+        $(document).on('click', '#navigation > li > a', function(e) {
+            if ($(window).width() <= 992) {
+                e.preventDefault();
+                $(this).siblings('.submenu').toggleClass('show');
+            }
+        });
+
+        // Sticky header
+        $(window).scroll(function() {
+            if ($(this).scrollTop() > 100) {
+                $('#sticky-header').addClass('sticky');
+            } else {
+                $('#sticky-header').removeClass('sticky');
+            }
+        });
+
+        // Set active menu based on current URL
+        function setActiveMenu() {
+            var currentUrl = window.location.pathname;
+            var currentHash = window.location.hash;
+
+            // Remove all active classes first
+            $('#navigation > li').removeClass('active');
+            $('.submenu li a').removeClass('active');
+
+            // Check each menu item
+            $('#navigation > li').each(function() {
+                var $this = $(this);
+
+                // Check main menu link
+                var mainLink = $this.find('> a').attr('href');
+                if (mainLink) {
+                    var mainUrl = mainLink.split('#')[0]; // Remove hash
+                    if (currentUrl === mainUrl || (mainUrl !== '/' && currentUrl.includes(mainUrl.replace('/myapp/', '')))) {
+                        $this.addClass('active');
+                    }
+                }
+
+                // Check submenu links
+                $this.find('.submenu li a').each(function() {
+                    var subLink = $(this).attr('href');
+                    if (subLink) {
+                        var subUrl = subLink.split('#')[0]; // Remove hash
+                        if (currentUrl === subUrl || (subUrl !== '/' && currentUrl.includes(subUrl.replace('/myapp/', '')))) {
+                            $this.addClass('active');
+                            $(this).addClass('active');
+                            return false; // Break the loop
+                        }
+                    }
+                });
+            });
+        }
+
+        // Initialize active menu
+        setActiveMenu();
+
+        // Update active menu when URL changes (for single page apps)
+        $(window).on('hashchange', function() {
+            setActiveMenu();
+        });
+
+        // Date picker initialization
+        $('#datepicker').datepicker({
+            iconsLibrary: 'fontawesome',
+            disableDaysOfWeek: [0, 0],
+        });
+
+        $('#datepicker2').datepicker({
+            iconsLibrary: 'fontawesome',
+            icons: {
+                rightIcon: '<span class="fa fa-caret-down"></span>'
+            }
+        });
+
+        var timepicker = $('#timepicker').timepicker({
+            format: 'HH.MM'
+        });
+
+        // Slicknav initialization
+        $('#navigation').slicknav({
+            appendTo: '.mobile_menu',
+            label: '',
+            closeOnClick: true,
+            brand: '<a href="/myapp/adminhome"><img src="/static/img/logo.png" style="height:30px;"></a>'
+        });
+
+        // DataTables initialization (if needed)
+        if ($('#reviewsTable').length) {
+            const table = $('#reviewsTable').DataTable({
+                pageLength: 5,
+                ordering: true,
+                lengthMenu: [5, 10, 20]
+            });
+
+            $('#fromDate, #toDate').on('change', function () {
+                table.draw();
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,73 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<style>
+    .pet-container {
+        width: 450px;
+        margin: 60px auto;
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+    }
+
+    .pet-container h2 {
+        text-align: center;
+        color: #F86802;
+        margin-bottom: 25px;
+        font-weight: 600;
+    }
+
+    .pet-container label {
+        font-weight: 600;
+        color: #444;
+    }
+
+    .pet-container input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-top: 8px;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        transition: 0.3s;
+    }
+
+    .pet-container input[type="text"]:focus {
+        border-color: #F86802;
+        outline: none;
+        box-shadow: 0 0 5px rgba(248,104,2,0.3);
+    }
+
+    .pet-container button {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px;
+        border: none;
+        background: linear-gradient(to right, #F86802, #AF3906);
+        color: white;
+        font-weight: 600;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s;
+    }
+
+    .pet-container button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 12px rgba(0,0,0,0.15);
+    }
+</style>
+
+<div class="pet-container">
+    <h2>Add Pet Type</h2>
+
+    <form method="post" action="/myapp/add_pet_post/">
+        {% csrf_token %}
+
+        <label>Pet Type Name</label>
+        <input type="text" name="petname" placeholder="Enter pet type (Dog, Cat...)" required>
+
+        <button type="submit">Add Pet Type</button>
+    </form>
+</div>
+
+{% endblock %}

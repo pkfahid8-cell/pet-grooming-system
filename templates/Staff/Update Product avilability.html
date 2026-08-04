@@ -1,0 +1,135 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+<style>
+
+    body {
+        background: #f1f3f5 !important;
+        font-family: "Poppins", sans-serif;
+    }
+
+    /* Center container */
+    .update-wrapper {
+        max-width: 600px;
+        margin: 50px auto;
+    }
+    html {
+    scroll-behavior: smooth !important;
+}
+
+
+    /* Card */
+    .card-custom {
+        border-radius: 16px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 6px 25px rgba(0,0,0,0.15);
+    }
+
+    /* Orange gradient header */
+    .card-header-custom {
+        background: linear-gradient(135deg, #ff512f, #ff914d);
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    /* Info Boxes */
+    .info-box {
+        background: #fff7ef;
+        border-left: 4px solid #ff6b00;
+        padding: 14px 16px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        font-size: 15px;
+    }
+
+    .info-label {
+        font-weight: 600;
+        color: #ff6b00;
+    }
+
+    /* Dropdown */
+    .form-select {
+        border: 2px solid #ff8a3d;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: .3s;
+    }
+    .form-select:focus {
+        border-color: #ff6b00;
+        box-shadow: 0 0 8px rgba(255,110,0,0.4);
+    }
+
+    /* Submit Button */
+    .btn-orange {
+        background: linear-gradient(135deg, #ff6b00, #ff8500);
+        border: none;
+        padding: 10px 18px;
+        width: 100%;
+        color: white;
+        font-weight: 600;
+        border-radius: 10px;
+        transition: .3s;
+        font-size: 16px;
+    }
+    .btn-orange:hover {
+        background: linear-gradient(135deg, #ff5500, #ff7300);
+    }
+
+</style>
+
+
+<div class="update-wrapper">
+
+    <div class="card-custom">
+
+        <!-- Header -->
+        <div class="card-header-custom">
+            Update Pet Availability
+        </div>
+
+        <!-- Body -->
+        <div class="p-4">
+
+            <form method="post" action="/myapp/update_Product_availabilty_post/">
+                {% csrf_token %}
+
+                <input type="hidden" name="pro_id" value="{{ Products.id }}">
+
+                <!-- Pet Name -->
+                <div class="info-box">
+                    <span class="info-label">Product Name:</span> {{ Products.pname }}
+                </div>
+
+                <!-- Current Status -->
+                <div class="info-box">
+                    <span class="info-label">Current Status:</span> {{ Products.status }}
+                </div>
+
+                <!-- Status dropdown -->
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Change Status</label>
+                    <select name="status" class="form-select" required>
+                        <option value="available" {% if Products.status == 'available' %}selected{% endif %}>Available</option>
+                        <option value="out of Stock" {% if Products.status == 'out of Stock' %}selected{% endif %}>Out of Stock</option>
+                        <option value="low Stock" {% if Products.status == 'low Stock' %}selected{% endif %}>Low Stock</option>
+                        <option value="sold Out" {% if Products.status == 'sold Out' %}selected{% endif %}>Sold Out</option>
+                        <option value="coming Soon" {% if Products.status == 'coming Soon' %}selected{% endif %}>Coming Soon</option>
+                    </select>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-orange">Update</button>
+
+            </form>
+
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

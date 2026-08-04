@@ -1,0 +1,438 @@
+<!doctype html>
+<html class="no-js" lang="zxx">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Animal - Staff Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.png">
+
+    <!-- CSS FILES -->
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/static/css/themify-icons.css">
+    <link rel="stylesheet" href="/static/css/slicknav.css">
+    <link rel="stylesheet" href="/static/css/style.css">
+
+    <!-- 🔥 PROFESSIONAL NAVBAR CSS FIX -->
+    <style>
+        /* ---------- GLOBAL RESET ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* ---------- HEADER AREA ---------- */
+        .header-area {
+            position: relative;
+            z-index: 1000;
+        }
+
+        .main-header-area {
+            background: #ffffff;
+            padding: 0;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+
+        }
+
+        /* ---------- STICKY HEADER ENHANCEMENT ---------- */
+        #sticky-header.sticky {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: #ffffff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            animation: slideDown 0.3s ease;
+            z-index: 1030;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        /* ---------- LOGO STYLING ---------- */
+        .logo {
+            height: 70px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 50px;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        /* ---------- MAIN NAVIGATION CONTAINER ---------- */
+        .main-menu {
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .main-menu nav {
+            width: 100%;
+        }
+
+        /* ---------- NAVIGATION LIST - PERFECT FLEXBOX ---------- */
+        #navigation {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            position: relative;
+        }
+
+        /* ---------- MAIN NAV ITEMS ---------- */
+        #navigation > li {
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        #navigation > li > a {
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            text-decoration: none;
+            padding: 0 18px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        #navigation > li > a:hover {
+            color: #ff6600;
+            background: rgba(255, 102, 0, 0.05);
+        }
+
+        /* ---------- DROPDOWN ARROW ALIGNMENT ---------- */
+        #navigation > li > a i {
+            font-size: 10px;
+            margin-left: 4px;
+            transition: transform 0.3s ease;
+        }
+
+        #navigation > li:hover > a i {
+            transform: rotate(180deg);
+        }
+
+        /* ---------- SUBMENU STYLING ---------- */
+        .submenu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            min-width: 220px;
+            background: #ffffff;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+            border-radius: 0 0 8px 8px;
+            padding: 10px 0;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 1000;
+            list-style: none;
+            margin: 0;
+            border-top: 3px solid #ff6600;
+        }
+
+        .submenu li {
+            position: relative;
+        }
+
+        .submenu li a {
+            font-size: 13px;
+            font-weight: 500;
+            padding: 12px 24px;
+            white-space: nowrap;
+            display: block;
+            color: #555;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .submenu li a:hover {
+            background: #fff8f0;
+            color: #ff6600;
+            border-left: 3px solid #ff6600;
+            padding-left: 21px;
+        }
+
+        /* ---------- SHOW SUBMENU ON HOVER ---------- */
+        #navigation > li:hover > .submenu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* ---------- ACTIVE MENU STATE ---------- */
+        #navigation > li.active > a {
+            color: #ff6600;
+            font-weight: 700;
+        }
+
+        #navigation > li.active > a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 3px;
+            background: #ff6600;
+            border-radius: 2px;
+        }
+
+        /* ---------- LOGOUT BUTTON - PERFECT ALIGNMENT ---------- */
+        #navigation > li.logout-btn {
+            margin-left: auto !important;
+        }
+
+        #navigation > li.logout-btn a {
+            background: linear-gradient(135deg, #ff6600 0%, #ff9900 100%);
+            color: white !important;
+            border: none;
+            border-radius: 25px;
+            padding: 10px 24px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(255, 102, 0, 0.2);
+            margin-left: 15px;
+        }
+
+        #navigation > li.logout-btn a:hover {
+            background: linear-gradient(135deg, #ff5500 0%, #ff8800 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(255, 102, 0, 0.3);
+        }
+
+        /* ---------- CONTENT AREA ---------- */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 40px;
+            border-radius: 20px;
+            min-height: 60vh;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid #f0f0f0;
+        }
+
+        /* ---------- RESPONSIVE DESIGN ---------- */
+        @media (max-width: 1200px) {
+            #navigation > li > a {
+                padding: 0 15px;
+                font-size: 13.5px;
+            }
+
+            #navigation > li.logout-btn a {
+                padding: 9px 20px;
+                font-size: 13.5px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .main-menu {
+                display: none;
+            }
+
+            .mobile_menu {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                height: 70px;
+            }
+
+            .content-wrapper {
+                margin: 30px auto;
+                padding: 30px 20px;
+            }
+
+            /* Slicknav Mobile Menu Styling */
+            .slicknav_menu {
+                background: transparent !important;
+                padding: 0 !important;
+            }
+
+            .slicknav_btn {
+                background: #ff6600 !important;
+                margin: 20px 0 !important;
+                border-radius: 5px !important;
+            }
+
+            .slicknav_nav {
+                background: white !important;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                border-radius: 0 0 10px 10px;
+                padding: 15px 0 !important;
+            }
+
+            .slicknav_nav a {
+                color: #333 !important;
+                font-weight: 500 !important;
+                padding: 12px 20px !important;
+                transition: all 0.2s ease;
+            }
+
+            .slicknav_nav a:hover {
+                background: #fff8f0 !important;
+                color: #ff6600 !important;
+            }
+
+            .slicknav_nav .submenu {
+                display: none;
+                padding-left: 20px;
+                background: #f9f9f9;
+            }
+
+            .slicknav_nav .submenu.show {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                margin: 20px 15px;
+                padding: 25px 15px;
+                border-radius: 15px;
+            }
+
+            .logo img {
+                max-height: 45px;
+            }
+        }
+
+        /* ---------- MOBILE MENU IMPROVEMENTS ---------- */
+        .slicknav_collapsed {
+            display: block !important;
+        }
+
+        /* ---------- SCROLLBAR STYLING ---------- */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #ff6600;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ff5500;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-area"
+        <div id="sticky-header" class="main-header-area">
+            <div class="container" >
+                <div class="row align-items-center">
+                    <!-- LOGO -->
+                    <div class="col-xl-3 col-lg-3 col-6">
+                        <div class="logo">
+                            <a href="/myapp/shophome">
+                                <img src="/static/img/logo.png" alt="Anipat Staff">
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- DESKTOP MENU -->
+                    <div class="col-xl-9 col-lg-9 d-none d-lg-block">
+                        <div class="main-menu">
+                            <nav>
+                                <ul id="navigation">
+                                    <li><a href="/myapp/shophome">HOME</a></li>
+
+                                    <li>
+                                        <a href="#">STAFF <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/view_profile_shop/#a">View Profile</a></li>
+                                            <li><a href="/myapp/staff_view_reviews/#a">Reviews</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">PRODUCTS <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/view_product_get/#a">View Products</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">GROOMING <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/view_groomings_get/#a">View Services</a></li>
+                                            <li><a href="/myapp/view_grooming_booking/#a">View Bookings</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">ORDERS&REPORT <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/Staff_view_orders/#a">View Orders</a></li>
+                                            <li><a href="/myapp/staff_view_payments/#a">Payment Details</a></li>
+                                            <li><a href="/myapp/staff_generate_report/#a">Generate Report</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">COMPLAINTS <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/staff_view_complaints/#a">View Complaints</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <li>
+                                        <a href="#">PASSWORD <i class="ti-angle-down"></i></a>
+                                        <ul class="submenu">
+                                            <li><a href="/myapp/change_password_shop_get/#a">Change Password</a></li>
+                                        </ul>
+                                    </li>
+
+                                    <!-- LOGOUT BUTTON -->
+                                    <li class="logout-btn">
+                                        <a href="/myapp/logout_get">LOGOUT</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+
+                    <!-- MOBILE MENU -->
+                    <div class="col-12 d-lg-none">
+                        <div class="mobile_menu"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

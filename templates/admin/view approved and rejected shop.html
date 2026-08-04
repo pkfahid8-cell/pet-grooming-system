@@ -1,0 +1,224 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<!-- GLOBAL SMOOTH SCROLL -->
+<style>
+html, body {
+    scroll-behavior: smooth !important;
+}
+</style>
+
+<style>
+
+/* PAGE WRAPPER */
+.page-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: #f8f8f8;
+}
+
+/* TITLE */
+.page-title {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* OUTER ORANGE BOX */
+.outer-box {
+    max-width: 1300px;
+    margin: auto;
+    background: #ff6d33;
+    padding: 25px;
+    border-radius: 25px;
+    box-shadow: 0px 10px 35px rgba(0,0,0,0.20);
+}
+
+/* INNER WHITE CARD */
+.inner-box {
+    background: #fff6f0;
+    padding: 20px;
+    border-radius: 18px;
+}
+
+/* TABS STYLE */
+.nav-tabs .nav-link {
+    font-weight: 700;
+    color: #444;
+    border-radius: 10px 10px 0 0;
+}
+
+.nav-tabs .nav-link.active {
+    background: #222;
+    color: white;
+    border: none;
+}
+
+/* TABLE STYLE */
+.table {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: #222;
+    color: white;
+}
+
+.table-danger {
+    background: #b30000 !important;
+    color: white;
+}
+
+/* IMAGE STYLE */
+.table img {
+    border-radius: 10px;
+    border: 2px solid #eee;
+}
+
+/* HIDE LENGTH + DEFAULT SEARCH */
+.dataTables_length,
+.dataTables_filter {
+    display: none !important;
+}
+
+/* CUSTOM SEARCH BAR */
+.search-box {
+    width: 270px;
+    padding: 7px 12px;
+    border: 2px solid #ff6d33;
+    border-radius: 10px;
+}
+
+</style>
+
+
+<div class="page-wrapper">
+
+    <h2 class="page-title">Shop Management</h2>
+
+    <div class="outer-box">
+        <div class="inner-box">
+
+            <!-- SEARCH (COMMON FOR BOTH TABS) -->
+            <div class="d-flex justify-content-end mb-3">
+                <input type="text" id="searchInput" class="search-box" placeholder="Search shops...">
+            </div>
+
+            <!-- ----------------- TABS ----------------- -->
+            <ul class="nav nav-tabs" id="shopTab" role="tablist">
+                <li class="nav-item">
+                    <button class="nav-link active" id="approved-tab" data-bs-toggle="tab" data-bs-target="#approved">
+                        Approved Shops
+                    </button>
+                </li>
+
+                <li class="nav-item">
+                    <button class="nav-link" id="rejected-tab" data-bs-toggle="tab" data-bs-target="#rejected">
+                        Rejected Shops
+                    </button>
+                </li>
+            </ul>
+
+            <!-- ----------------- TAB CONTENT ----------------- -->
+            <div class="tab-content mt-3">
+
+                <!-- APPROVED SHOPS -->
+                <div class="tab-pane fade show active" id="approved">
+
+                    <!-- Smooth Scrolling Added -->
+                    <div class="table-responsive" style="scroll-behavior:smooth; max-height:600px; overflow-y:auto;">
+                        <table id="approvedTable" class="table table-bordered align-middle">
+                            <thead>
+                                <tr>
+                                    <th>Staff Name</th>
+                                    <th>Phone</th>
+                                    <th>Staff Image</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for i in approved %}
+                                <tr>
+                                    <td>{{ i.name }}</td>
+                                    <td>{{ i.phone_no }}</td>
+                                    <td><img src="{{ i.profile }}" width="90"></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+
+                <!-- REJECTED SHOPS -->
+                <div class="tab-pane fade" id="rejected">
+
+                    <!-- Smooth Scrolling Added -->
+                    <div class="table-responsive" style="scroll-behavior:smooth; max-height:600px; overflow-y:auto;">
+                        <table id="rejectedTable" class="table table-bordered align-middle">
+                            <thead class="table-danger">
+                                <tr>
+                                    <th>Staff Name</th>
+                                    <th>Phone</th>
+                                    <th>Staff</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for i in rejected %}
+                                <tr>
+                                    <td>{{ i.name }}</td>
+                                    <td>{{ i.phone_no }}</td>
+                                    <td><img src="{{ i.profile }}" width="90"></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- JS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+
+$(document).ready(function () {
+
+    /* INIT DATATABLES */
+    const approvedTable = $('#approvedTable').DataTable({
+        pageLength: 3,
+        ordering: true
+    });
+
+    const rejectedTable = $('#rejectedTable').DataTable({
+        pageLength: 3,
+        ordering: true
+    });
+
+    /* COMMON SEARCH FOR BOTH TABS */
+    $('#searchInput').on('keyup', function () {
+        approvedTable.search(this.value).draw();
+        rejectedTable.search(this.value).draw();
+    });
+
+});
+
+</script>
+
+{% endblock %}

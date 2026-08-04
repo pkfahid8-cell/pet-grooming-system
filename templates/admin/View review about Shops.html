@@ -1,0 +1,199 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+    <style>
+        html, body {
+            scroll-behavior: smooth;
+        }
+
+        /* PAGE */
+        .page-wrapper {
+            min-height: 100vh;
+            padding: 25px 15px;
+            background: #f8f8f8;
+        }
+
+        /* TITLE */
+        .page-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        /* BOX */
+        .outer-box {
+            max-width: 1200px;
+            margin: auto;
+            background: #ff6d33;
+            padding: 20px;
+            border-radius: 25px;
+        }
+
+        .inner-box {
+            background: #fff6f0;
+            padding: 20px;
+            border-radius: 18px;
+        }
+
+        /* FILTER */
+        .filter-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 250px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 2px solid #ff6d33;
+        }
+
+        .form-control {
+            border-radius: 10px;
+            border: 2px solid #ff6d33;
+        }
+
+        /* TABLE */
+        .table {
+            background: white;
+            border-radius: 14px;
+        }
+
+        .table thead {
+            background: #222;
+            color: white;
+        }
+
+        /* STAR */
+        .star {
+            color: #f5c518;
+            font-size: 18px;
+        }
+
+        .star.empty {
+            color: #ddd;
+        }
+
+        /* DATATABLE HIDE */
+        .dataTables_filter,
+        .dataTables_length {
+            display: none !important;
+        }
+    </style>
+
+    <div class="page-wrapper">
+
+        <h1 class="page-title">Ratings & Reviews</h1>
+
+        <div class="outer-box">
+            <div class="inner-box">
+
+                <!-- FILTER -->
+                <div class="filter-row">
+                    <div style="flex:1">
+                        <label>From</label>
+                        <input type="date" id="fromDate" class="form-control">
+                    </div>
+
+                    <div style="flex:1">
+                        <label>To</label>
+                        <input type="date" id="toDate" class="form-control">
+                    </div>
+
+                    <input type="text" id="searchInput" class="search-input" placeholder="Search...">
+                </div>
+
+                <!-- TABLE -->
+                <div class="table-responsive" style="max-height:600px; overflow:auto;">
+                    <table id="reviewTable" class="table table-bordered">
+
+                        <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Product</th>
+                            <th>Rating</th>
+                            <th>Review</th>
+                            <th>Date</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for r in data %}
+                            <tr>
+                                <td>{{ r.USER.cname }}</td>
+                                <td>{{ r.PRODUCT.pname }}</td>
+
+                                <!-- ⭐ STAR LOGIC (CHARFIELD SAFE) -->
+                                <td>
+                                    {% for i in "12345"|make_list %}
+                                        {% if forloop.counter <= r.rating %}
+                                            <span class="star">★</span>
+                                        {% else %}
+                                            <span class="star empty">★</span>
+                                        {% endif %}
+                                    {% endfor %}
+                                </td>
+
+
+                                <td>{{ r.review }}</td>
+                                <td>{{ r.date }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="5" class="text-center">No reviews found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+    <script>
+        /* DATE FILTER */
+        $.fn.dataTable.ext.search.push(function (settings, data) {
+
+            let min = $('#fromDate').val();
+            let max = $('#toDate').val();
+            let dateStr = data[4];
+
+            if (!dateStr) return true;
+
+            let date = new Date(dateStr);
+            let minDate = min ? new Date(min) : null;
+            let maxDate = max ? new Date(max) : null;
+
+            return (!minDate || date >= minDate) &&
+                (!maxDate || date <= maxDate);
+        });
+
+        $(document).ready(function () {
+
+            const table = $('#reviewTable').DataTable({
+                pageLength: 5,
+                ordering: true
+            });
+
+            $('#fromDate, #toDate').on('change', function () {
+                table.draw();
+            });
+
+            $('#searchInput').on('keyup', function () {
+                table.search(this.value).draw();
+            });
+
+        });
+    </script>
+
+{% endblock %}

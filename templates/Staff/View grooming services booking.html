@@ -1,0 +1,227 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+    <style>
+        html, body {
+            scroll-behavior: smooth !important;
+            background: #f1f3f5 !important;
+            font-family: "Poppins", sans-serif;
+        }
+
+        .page-title {
+            font-size: 2.3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 25px;
+            color: #333;
+        }
+
+        /* Outer Orange Card */
+        .table-section {
+            max-width: 1250px;
+            margin: 25px auto;
+            background: linear-gradient(135deg, #ff512f, #ff914d);
+            padding: 25px;
+            border-radius: 22px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+            animation: fadeSlide 0.8s ease-out;
+        }
+
+        @keyframes fadeSlide {
+            0% {
+                opacity: 0;
+                transform: translateY(35px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Inner White Card */
+        .inner-card {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 16px;
+            margin-bottom: 15px;
+        }
+
+        /* Table Header */
+        table thead th {
+            background: #000 !important;
+            color: #fff !important;
+            text-transform: uppercase;
+            font-size: 14px;
+            padding: 12px;
+        }
+
+        /* Table Hover */
+        table tbody tr:hover td {
+            background: #fff3e6 !important;
+        }
+
+        /* Search Box */
+        .dataTables_wrapper .dataTables_filter {
+            display: flex !important;
+            justify-content: flex-end !important;
+            margin-bottom: 12px;
+        }
+
+        .dataTables_wrapper .dataTables_filter label {
+            font-weight: 700;
+            color: #ff6b00;
+            display: flex;
+            gap: 8px;
+        }
+
+        .dataTables_wrapper .dataTables_filter input {
+            border: 2px solid #ff6b00;
+            padding: 6px 12px;
+            border-radius: 10px;
+            width: 230px;
+        }
+
+        /* Pagination */
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background: #ff6b00 !important;
+            color: white !important;
+            border-radius: 6px;
+        }
+
+        /* Buttons */
+        .btn-success {
+            background: #28c76f !important;
+            border: none !important;
+        }
+
+        .btn-danger {
+            background: #ff4f4f !important;
+            border: none !important;
+        }
+
+        .btn-warning {
+            background: #ffaf00 !important;
+            border: none !important;
+        }
+    </style>
+
+    <h2 class="page-title">Grooming Bookings</h2>
+
+    <div class="table-section">
+
+        <!-- DATE FILTER (INSIDE CARD) -->
+        <div class="inner-card">
+            <div class="row">
+                <div class="col-md-4">
+                    <label><b>From Date</b></label>
+                    <input type="date" id="fromDate" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label><b>To Date</b></label>
+                    <input type="date" id="toDate" class="form-control">
+                </div>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="inner-card table-responsive">
+
+            <table id="bookingTable" class="table table-bordered table-hover align-middle">
+
+                <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Service</th>
+                    <th>Pet Name</th>
+                    <th>Pet Type</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Address</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for b in data %}
+                    <tr>
+                        <td>{{ b.USER.cname }}</td>
+                        <td>{{ b.SERVICE.service_name }}</td>
+                        <td>{{ b.pet_name }}</td>
+                        <td>{{ b.PET_TYPE.pet_type }}</td>
+                        <td>{{ b.date }}</td>
+                        <td>{{ b.time }}</td>
+                        <td>
+                            {{ b.ADDRESS.house_name }}<br>
+                            {{ b.ADDRESS.place }}, {{ b.ADDRESS.district }}<br>
+                            PIN: {{ b.ADDRESS.pin }}<br>
+                            {{ b.ADDRESS.landmark }}
+                        </td>
+                        <td class="text-capitalize">{{ b.status }}</td>
+
+                        <td>
+                            {% if b.status|lower == "pending" %}
+                                <a href="/myapp/accepted_booking/{{ b.id }}#a"
+                                   class="btn btn-success btn-sm">Accept</a>
+
+                                <a href="/myapp/rejected_booking/{{ b.id }}#a"
+                                   class="btn btn-danger btn-sm"
+                                   onclick="return confirm('Reject this booking?');">
+                                    Reject
+                                </a>
+
+                            {% elif b.status|lower == "accepted" %}
+                                <a href="/myapp/update_booking_get/{{ b.id }}#a"
+                                   class="btn btn-warning btn-sm">Update</a>
+
+                            {% else %}
+                                <span class="text-muted">No Action</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+    <!-- JS -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+    <script>
+        $.fn.dataTable.ext.search.push(function (settings, data) {
+
+            let min = $('#fromDate').val();
+            let max = $('#toDate').val();
+            let dateStr = data[4];
+
+            if (!dateStr) return true;
+
+            let date = new Date(dateStr);
+            let minDate = min ? new Date(min) : null;
+            let maxDate = max ? new Date(max) : null;
+
+            return (
+                (minDate === null || date >= minDate) &&
+                (maxDate === null || date <= maxDate)
+            );
+        });
+
+        $(document).ready(function () {
+            const table = $('#bookingTable').DataTable({
+                pageLength: 5,
+                ordering: true,
+                lengthMenu: [5, 10, 20]
+            });
+
+            $('#fromDate, #toDate').on('change', function () {
+                table.draw();
+            });
+        });
+    </script>
+
+{% endblock %}

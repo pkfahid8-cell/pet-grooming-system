@@ -1,0 +1,230 @@
+{% extends 'Staff/Shop_index.html' %}
+{% block body %}
+
+<style>
+html, body {
+    scroll-behavior: smooth !important;
+    background: #f2f4f7;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* PAGE */
+.page-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* TITLE */
+.page-title {
+    text-align: center;
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #1f2d3d;
+}
+
+/* ORANGE BOX */
+.outer-box {
+    background: #ff6d33;
+    padding: 30px;
+    border-radius: 28px;
+    max-width: 1100px;
+    margin: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+/* INNER BOX */
+.inner-box {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 20px;
+}
+
+/* SEARCH */
+.search-input {
+    width: 300px;
+    height: 42px;
+    border-radius: 8px;
+    border: 2px solid #ff6d33;
+    padding: 8px 12px;
+    font-size: 15px;
+    margin-bottom: 20px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 15px;
+    border: 2px solid #444;   /* OUTER BORDER */
+}
+
+/* HEADER */
+table thead th {
+    background: #1f2d3d;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: 700;
+    border: 1.5px solid #444;   /* HEADER GRID */
+}
+
+/* BODY CELLS */
+table tbody td {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1.5px solid #444;   /* INNER GRID */
+}
+
+/* ROW HEIGHT */
+table tbody tr {
+    height: 75px;
+}
+
+/* STRIPED */
+table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* HOVER */
+table tbody tr:hover {
+    background: #eef2f7;
+}
+
+/* PRODUCT IMAGE */
+.product-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+}
+
+/* BACK BUTTON */
+.back-btn {
+    background: #6c757d;
+    color: white;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-weight: 600;
+    border: none;
+    text-decoration: none;
+}
+
+.back-btn:hover {
+    background: #5a6268;
+    color: white;
+}
+
+/* DATATABLE FIX */
+.dataTables_filter,
+.dataTables_length {
+    display: none !important;
+}
+
+/* PAGINATION */
+.dataTables_paginate .paginate_button {
+    border-radius: 6px !important;
+    padding: 6px 12px !important;
+    margin: 2px;
+}
+
+.dataTables_paginate .paginate_button.current {
+    background: #ff6d33 !important;
+    color: white !important;
+    border: none !important;
+}
+
+@media (max-width: 768px) {
+    .search-input {
+        width: 100%;
+    }
+}
+</style>
+
+<div class="page-wrapper">
+
+    <h1 class="page-title">
+        ORDER SUB
+    </h1>
+
+    <div class="outer-box">
+        <div class="inner-box">
+
+            <!-- SEARCH -->
+            <input type="text"
+                   id="searchInput"
+                   class="search-input"
+                   placeholder="Search product / price / quantity...">
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+                <table id="orderItemTable">
+
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Image</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for i in items %}
+                        <tr>
+                            <td>{{ i.PRODUCT.pname }}</td>
+                            <td>{{ i.Quantity }}</td>
+                            <td>₹{{ i.unit_price }}</td>
+                            <td>
+                                <img src="{{ i.PRODUCT.image }}"
+                                     class="product-img">
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" style="text-align:center;">
+                                No items found
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+            <!-- BACK -->
+            <div style="margin-top:20px; text-align:right;">
+                <a href="/myapp/Staff_view_orders/#a" class="back-btn">
+                    ← Back to Orders
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+$(document).ready(function () {
+
+    const table = $('#orderItemTable').DataTable({
+        pageLength: 5,
+        ordering: true,
+        lengthMenu: [5, 10, 20]
+    });
+
+    $('#searchInput').on('keyup', function () {
+        table.search(this.value).draw();
+    });
+
+});
+</script>
+
+{% endblock %}

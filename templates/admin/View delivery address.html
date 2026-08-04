@@ -1,0 +1,65 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<style>
+    .container-box {
+        padding: 30px;
+    }
+
+    .card-box {
+        background: #ffffff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+    }
+
+    .card-box h5 {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .label {
+        font-weight: 600;
+        color: #555;
+    }
+</style>
+
+<div class="container-box">
+
+    <h2 class="mb-4">Delivery Address Details</h2>
+
+    {% if orders %}
+        {% for order in orders %}
+
+            <div class="card-box">
+
+                <h5>Order ID : {{ order.id }}</h5>
+
+                <p><span class="label">Customer Name :</span> {{ order.USER.cname }}</p>
+                <p><span class="label">Customer Phone :</span> {{ order.ADDRESS.phone }}</p>
+
+                <hr>
+
+                <p><span class="label">House Name :</span> {{ order.ADDRESS.house_name }}</p>
+                <p><span class="label">Place :</span> {{ order.ADDRESS.place }}</p>
+                <p><span class="label">District :</span> {{ order.ADDRESS.district }}</p>
+                <p><span class="label">Pin :</span> {{ order.ADDRESS.pin }}</p>
+                <p><span class="label">Landmark :</span> {{ order.ADDRESS.landmark }}</p>
+
+                <hr>
+
+                <p><span class="label">Order Date :</span> {{ order.date }}</p>
+                <p><span class="label">Order Status :</span> {{ order.status }}</p>
+                <p><span class="label">Total Amount :</span> ₹ {{ order.total_amount }}</p>
+
+            </div>
+
+        {% endfor %}
+    {% else %}
+        <p>No delivery addresses found.</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

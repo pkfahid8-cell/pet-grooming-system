@@ -1,0 +1,194 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+    <style>
+        body {
+            background: #f1f3f5 !important;
+            font-family: "Inter", "Poppins", sans-serif;
+        }
+
+        .page-wrapper {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .head1 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #2d3436;
+            margin-bottom: 25px;
+        }
+
+        .table-section {
+            width: 100%;
+            max-width: 1100px;
+            background: linear-gradient(135deg, #ff512f, #ff914d);
+            padding: 25px;
+            border-radius: 22px;
+            box-shadow: 0 8px 35px rgba(0, 0, 0, 0.25);
+        }
+
+        .inner-card {
+            background: #ffffff;
+            border-radius: 12px;
+        }
+
+        .table thead th {
+            background: #000;
+            color: #fff;
+            font-weight: 600;
+            padding: 14px;
+        }
+
+        .table tbody td {
+            padding: 14px;
+            vertical-align: middle;
+        }
+
+        .table img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        /* Status */
+        .badge-available {
+            background: #2ecc71;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        .badge-low {
+            background: #ff9f43;
+            padding: 6px 10px;
+            border-radius: 6px;
+        }
+
+        .badge-out {
+            background: #e74c3c;
+            padding: 6px 10px;
+            border-radius: 6px;
+            color: white;
+        }
+
+        /* Qty buttons */
+        .qty-btn {
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .qty-plus {
+            background: #2ecc71;
+            color: white;
+        }
+
+        .qty-minus {
+            background: #e74c3c;
+            color: white;
+        }
+
+    </style>
+
+
+    <div class="page-wrapper">
+
+        <h1 class="head1">Products List</h1>
+
+        <div class="table-section">
+            <div class="inner-card table-responsive">
+
+                <table id="productTable" class="table table-bordered">
+
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Product</th>
+                        <th>Brand</th>
+                        <th>Category</th>
+                        <th>Qty</th>
+                        <th>Price</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for p in data %}
+                        <tr>
+
+                            <td><img src="{{ p.image }}"></td>
+                            <td>{{ p.pname }}</td>
+                            <td>{{ p.brand_name }}</td>
+                            <td>{{ p.CATEGORY.cat_name }}</td>
+
+                            <!-- 🔥 QTY WITH ARROWS -->
+                            <td>
+
+                                <button class="qty-btn qty-minus"
+                                        onclick="updateQty({{ p.id }}, 'dec')">−
+                                </button>
+
+                                <span id="qty-{{ p.id }}" style="margin:0 10px;font-weight:600;">
+                            {{ p.Quantity }}
+                        </span>
+
+                                <button class="qty-btn qty-plus"
+                                        onclick="updateQty({{ p.id }}, 'inc')">+
+                                </button>
+
+                            </td>
+
+                            <td>₹{{ p.price }}</td>
+                            <td>{{ p.description }}</td>
+
+                            <!-- STATUS -->
+                            <td id="status-{{ p.id }}">
+                                {% if p.Quantity == 0 %}
+                                    <span class="badge-out">Sold Out</span>
+                                {% elif p.Quantity <= 3 %}
+                                    <span class="badge-low">Low Stock</span>
+                                {% else %}
+                                    <span class="badge-available">Available</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+    <script>
+        function updateQty(id, action) {
+
+            $.ajax({
+                url: "/myapp/update_product_quantity/",
+                type: "POST",
+                data: {
+                    id: id,
+                    action: action,
+                    csrfmiddlewaretoken: '{{ csrf_token }}'
+                },
+                success: function (response) {
+                    location.reload();  // auto refresh
+                }
+            });
+
+        }
+    </script>
+
+{% endblock %}

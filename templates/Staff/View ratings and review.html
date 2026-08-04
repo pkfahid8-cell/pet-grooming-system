@@ -1,0 +1,48 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Customer Reviews</h2>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th>#</th>
+                    <th>Customer</th>
+                    <th>Rating</th>
+                    <th>Review</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for r in reviews %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ r.USER.cname }}</td>
+
+                    <!-- ⭐ STAR DISPLAY -->
+                    <td>
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= r.rating %}
+                                <span style="color: gold; font-size:18px;">★</span>
+                            {% else %}
+                                <span style="color: #ccc; font-size:18px;">★</span>
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+
+                    <td>{{ r.review }}</td>
+                    <td>{{ r.date }}</td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center">No Reviews Found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

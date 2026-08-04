@@ -1,0 +1,170 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+<style>
+
+/* ---------- GLOBAL SMOOTH SCROLL ---------- */
+html {
+    scroll-behavior: smooth;
+}
+
+/* ---------- PAGE (NO COLOR) ---------- */
+.page-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: #f7f7f7;   /* light background */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.4s ease-in-out;
+}
+.dataTables_wrapper .dataTables_filter {
+    position: relative !important;
+    top: 0;
+    left: 300px;     /* move left */
+}
+
+
+/* ---------- TITLE ---------- */
+.head1 {
+    color: #333;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+/* ---------- TABLE SECTION WITH BEAUTIFUL BACKGROUND ---------- */
+.table-section {
+    width: 100%;
+    max-width: 1100px;
+
+    /* Background only behind table */
+    background: linear-gradient(135deg, #ff512f, #ff914d);
+
+    padding: 25px;
+    border-radius: 22px;
+
+    /* Shadow */
+    box-shadow: 0 8px 35px rgba(0,0,0,0.25);
+
+    /* Smooth load animation */
+    animation: fadeSlide 0.9s ease-out;
+}
+
+/* ---------- SMOOTH FADE + SLIDE ANIMATION ---------- */
+@keyframes fadeSlide {
+    0% {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- INNER GLASS CARD ---------- */
+.inner-card {
+    background: rgba(255,255,255,0.90);
+    padding: 20px;
+    border-radius: 18px;
+}
+
+/* ---------- TABLE STYLING ---------- */
+.table thead {
+    background: #222;
+    color: #fff;
+}
+
+.table tbody tr {
+    background: rgba(255, 255, 255, 0.85);
+}
+
+.table tbody tr:hover {
+    background: rgba(255, 255, 255, 1);
+    transition: 0.2s;
+}
+
+/* ---------- IMAGE ---------- */
+.table img {
+    width: 75px;
+    height: 75px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 3px solid #ff512f;
+}
+
+/* ---------- DATATABLE STYLE ---------- */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 12px;
+    border: 2px solid #ff512f;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 10px;
+}
+
+</style>
+
+
+<div class="page-wrapper">
+
+    <h1 class="head1">Customer Details</h1>
+
+    <!-- ONLY TABLE AREA HAS BACKGROUND -->
+    <div class="table-section">
+
+        <div class="inner-card table-responsive">
+            <table id="customerTable" class="table table-bordered align-middle">
+
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Place</th>
+                        <th>Post</th>
+                        <th>Pin</th>
+                        <th>Photo</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                {% for c in data %}
+                    <tr>
+                        <td>{{ c.cname }}</td>
+                        <td>{{ c.email }}</td>
+                        <td>{{ c.phone_no }}</td>
+                        <td>{{ c.place }}</td>
+                        <td>{{ c.post }}</td>
+                        <td>{{ c.pin }}</td>
+                        <td><img src="/media/{{ c.profile_pic }}"></td>
+                        <td>{{ c.status }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#customerTable').DataTable({
+        pageLength: 5,
+        ordering: true,
+        lengthMenu: [5, 10, 20]
+    });
+});
+</script>
+
+{% endblock %}

@@ -1,0 +1,181 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
+        .page-wrapper {
+            min-height: 100vh;
+            padding: 40px 20px;
+            background: #f0f0f0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .edit-section {
+            width: 100%;
+            max-width: 780px;
+            background: linear-gradient(135deg, #ff6a3d, #ff9f4d);
+            padding: 35px;
+            border-radius: 25px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.28);
+        }
+
+        .inner-card {
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .label-small {
+            font-size: 14px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        .form-control {
+            height: 45px;
+            border-radius: 12px;
+            border: 1px solid #ddd;
+        }
+
+        .form-control:focus {
+            border-color: #ff6a3d;
+            box-shadow: 0 0 0 2px rgba(255, 106, 61, 0.25);
+        }
+
+        .img-preview {
+            width: 130px;
+            height: 130px;
+            object-fit: cover;
+            border-radius: 16px;
+            border: 3px solid #eee;
+        }
+
+        .btn-update {
+            background: #111;
+            color: #fff;
+            padding: 10px 50px;
+            font-weight: 700;
+            border-radius: 14px;
+        }
+
+        .text-danger {
+            font-size: 13px;
+        }
+
+        .d-none {
+            display: none;
+        }
+    </style>
+
+    <div class="page-wrapper">
+        <div class="edit-section">
+            <div class="inner-card">
+
+                <h2 class="text-center fw-bold mb-4">Edit Shop Profile</h2>
+
+                <form action="/myapp/edit_profile_shop_post/" method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <input type="hidden" name="staff_id" value="{{ shop.id }}">
+
+                    <div class="section-title">Shop Details</div>
+
+                    <div class="row g-3">
+
+                        <div class="col-md-6">
+                            <label class="label-small">Staff Name</label>
+                            <input type="text" id="sname" name="name" value="{{ shop.name }}"
+                                   pattern="[A-Za-z ]{2,50}" class="form-control" required
+                                   oninput="validateField('sname'); checkDuplicate('sname')">
+                            <div id="snameError" class="text-danger d-none">Only letters allowed</div>
+                            <div id="snameExists" class="text-danger d-none">Shop name already exists</div>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <label class="label-small">Phone</label>
+                            <input type="text" id="phone_no" name="phone" value="{{ shop.phone_no }}"
+                                   pattern="[0-9]{10,15}" class="form-control" required
+                                   oninput="validateField('phone_no'); checkDuplicate('phone_no')">
+                            <div id="phone_noError" class="text-danger d-none">10–15 digits only</div>
+                            <div id="phone_noExists" class="text-danger d-none">Phone already exists</div>
+                        </div>
+
+
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div class="section-title">Staff Image</div>
+                    <div class="row g-3 align-items-center">
+                        <div class="col-md-4 text-center">
+                            <img src="{{ shop.profile }}" class="img-preview">
+                        </div>
+                        <div class="col-md-8">
+                            <input type="file" name="staff_image" class="form-control" accept="image/*">
+                        </div>
+                    </div>
+
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-update">Update Profile</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const shopId = "{{ shop.id }}";
+
+        function validateField(id) {
+            const field = document.getElementById(id);
+            const error = document.getElementById(id + "Error");
+            if (!field.checkValidity()) {
+                error.classList.remove("d-none");
+            } else {
+                error.classList.add("d-none");
+            }
+        }
+
+        function checkDuplicate(fieldId) {
+            const field = document.getElementById(fieldId);
+            const error = document.getElementById(fieldId + "Exists");
+
+            if (field.value.trim() === "") {
+                error.classList.add("d-none");
+                return;
+            }
+
+            fetch(`/myapp/check_shop_exists/?field=${fieldId}&value=${field.value}&shop_id=${shopId}`)
+                .then(res = > res.json()
+        )
+        .
+            then(data = > {
+                if (data.exists
+        )
+            {
+                error.classList.remove("d-none");
+            }
+        else
+            {
+                error.classList.add("d-none");
+            }
+        })
+            ;
+        }
+    </script>
+
+{% endblock %}

@@ -1,0 +1,194 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<style>
+html {
+    scroll-behavior: smooth;
+}
+
+.page-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+    background: #f7f7f7;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Datatable search position */
+.dataTables_wrapper .dataTables_filter {
+    position: relative !important;
+    left: 300px;
+}
+
+/* Title */
+.head1 {
+    color: #333;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 25px;
+}
+
+/* Table section background */
+.table-section {
+    width: 100%;
+    max-width: 1200px;
+    background: linear-gradient(135deg, #ff512f, #ff914d);
+    padding: 25px;
+    border-radius: 22px;
+    box-shadow: 0 8px 35px rgba(0,0,0,0.25);
+    animation: fadeSlide 0.9s ease-out;
+}
+
+@keyframes fadeSlide {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.inner-card {
+    background: rgba(255,255,255,0.92);
+    padding: 20px;
+    border-radius: 18px;
+}
+
+/* Table style */
+.table thead {
+    background: #222;
+    color: #fff;
+}
+
+.table tbody tr {
+    background: rgba(255,255,255,0.9);
+}
+
+.table tbody tr:hover {
+    background: #fff;
+    transition: 0.2s;
+}
+
+/* Datatable inputs */
+.dataTables_wrapper .dataTables_filter input {
+    border-radius: 20px;
+    padding: 6px 12px;
+    border: 2px solid #ff512f;
+}
+
+.dataTables_wrapper .dataTables_length select {
+    border-radius: 10px;
+}
+</style>
+
+<div class="page-wrapper">
+
+    <h1 class="head1">View Complaints & Replies</h1>
+
+    <div class="table-section">
+
+        <div class="inner-card">
+
+            <!-- Date Filter -->
+            <div class="row mb-3">
+                <div class="col-md-4">
+                    <label><b>From Date</b></label>
+                    <input type="date" id="fromDate" class="form-control">
+                </div>
+                <div class="col-md-4">
+                    <label><b>To Date</b></label>
+                    <input type="date" id="toDate" class="form-control">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table id="complaintTable" class="table table-bordered align-middle">
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Complaint</th>
+                            <th>Reply</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for i in data %}
+                        <tr>
+                            <td>{{ i.id }}</td>
+                            <td>{{ i.USER.cname }}</td>
+                            <td>{{ i.complaint }}</td>
+                            <td>
+                                {% if i.reply %}
+                                    {{ i.reply }}
+                                {% else %}
+                                    <span class="text-danger">Pending</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ i.date }}</td>
+                            <td>
+                                {% if i.reply %}
+                                    <span class="badge bg-success">Replied</span>
+                                {% else %}
+                                    <a href="/myapp/send_reply_get/{{ i.id }}#a"
+                                       class="btn btn-primary btn-sm">
+                                        Reply
+                                    </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+/* Date filter */
+$.fn.dataTable.ext.search.push(function(settings, data) {
+    let min = $('#fromDate').val();
+    let max = $('#toDate').val();
+    let dateStr = data[4];
+
+    if (!dateStr) return true;
+
+    let date = new Date(dateStr);
+    let minDate = min ? new Date(min) : null;
+    let maxDate = max ? new Date(max) : null;
+
+    if ((minDate === null || date >= minDate) &&
+        (maxDate === null || date <= maxDate)) {
+        return true;
+    }
+    return false;
+});
+
+$(document).ready(function () {
+    const table = $('#complaintTable').DataTable({
+        pageLength: 5,
+        ordering: true,
+        lengthMenu: [5, 10, 20]
+    });
+
+    $('#fromDate, #toDate').on('change', function () {
+        table.draw();
+    });
+});
+</script>
+
+{% endblock %}

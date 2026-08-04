@@ -1,0 +1,143 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<style>
+
+    html, body {
+        scroll-behavior: smooth !important;
+        background: #f1f3f5 !important;
+        font-family: "Poppins", sans-serif;
+    }
+
+    /* Wrapper */
+    .form-wrapper {
+        max-width: 650px;
+        margin: 40px auto;
+    }
+
+    /* Card container */
+    .card-custom {
+        border-radius: 18px;
+        overflow: hidden;
+        background: #ffffff;
+        box-shadow: 0 6px 30px rgba(0,0,0,0.12);
+        animation: fadeIn 0.7s ease-out;
+    }
+
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(25px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Orange Header */
+    .header-box {
+        background: linear-gradient(135deg, #ff512f, #ff914d);
+        padding: 18px;
+        text-align: center;
+        color: white;
+        font-size: 1.7rem;
+        font-weight: 700;
+        letter-spacing: .5px;
+    }
+
+    /* Input styling */
+    .form-control, textarea {
+        border: 2px solid #ffc49a;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 15px;
+        transition: 0.3s;
+    }
+
+    .form-control:focus,
+    textarea:focus {
+        border-color: #ff6b00;
+        background: #fff5eb;
+        box-shadow: 0 0 10px rgba(255,120,0,0.35);
+    }
+
+    label {
+        font-weight: 600;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    /* Submit Button */
+    .btn-orange {
+        background: linear-gradient(135deg, #ff6b00, #ff8500);
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        color: white;
+        width: 100%;
+        font-weight: 700;
+        font-size: 17px;
+        transition: 0.3s;
+        margin-top: 10px;
+    }
+
+    .btn-orange:hover {
+        background: linear-gradient(135deg, #ff5400, #ff7600);
+        transform: translateY(-2px);
+    }
+
+</style>
+
+
+<div class="form-wrapper">
+
+    <div class="card-custom">
+
+        <div class="header-box">
+            Add Grooming Service
+        </div>
+
+        <div class="p-4">
+
+            <form id="addForm" action="/myapp/add_grooming_post/" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label>Service Name</label>
+                    <input type="text" name="service_name" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" rows="4"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label>Price</label>
+                    <input type="text" name="price" class="form-control" required>
+                </div>
+                <div class="mb-3">
+                    <label>Time</label>
+                    <input type="text" name="time" class="form-control" required>
+                </div>
+
+                <div class="mb-3">
+                    <label>Image</label>
+                    <input type="file" name="image" accept="image/*" class="form-control">
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn-orange" onclick="setScrollFlag()">
+                    Save Grooming Service
+                </button>
+
+            </form>
+
+        </div>
+    </div>
+
+</div>
+
+<!-- When submitting → enable smooth scroll for next page -->
+<script>
+function setScrollFlag() {
+    localStorage.setItem("scrollToTable", "yes");
+}
+</script>
+
+{% endblock %}

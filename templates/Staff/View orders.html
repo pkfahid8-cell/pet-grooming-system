@@ -1,0 +1,318 @@
+{% extends 'Staff/Shop_index.html' %}
+{% block body %}
+
+<style>
+    html, body {
+        scroll-behavior: smooth !important;
+        background: #f2f4f7;
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .page-wrapper {
+        min-height: 100vh;
+        padding: 40px 20px;
+    }
+
+    .page-title {
+        text-align: center;
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 35px;
+        color: #1f2d3d;
+    }
+
+    .outer-box {
+        background: #ff6d33;
+        padding: 35px;
+        border-radius: 28px;
+        max-width: 1250px;
+        margin: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    }
+
+    .inner-box {
+        background: #ffffff;
+        padding: 30px;
+        border-radius: 22px;
+    }
+
+    .filter-row {
+        display: flex;
+        gap: 25px;
+        flex-wrap: wrap;
+        margin-bottom: 25px;
+    }
+
+    .date-field {
+        flex: 1;
+        min-width: 220px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .date-field label {
+        font-weight: 600;
+        margin-bottom: 6px;
+        color: #333;
+    }
+
+    .date-field input,
+    .search-input {
+        height: 45px;
+        border-radius: 10px;
+        border: 2px solid #ff6d33;
+        padding: 10px 14px;
+        font-size: 15px;
+        transition: 0.3s ease;
+    }
+
+    .date-field input:focus,
+    .search-input:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 109, 51, 0.2);
+    }
+
+    table {
+        width: 100%;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    table thead {
+        background: #1f2d3d;
+        color: white;
+    }
+
+    table thead th {
+        padding: 14px;
+        text-align: center;
+    }
+
+    table tbody td {
+        padding: 14px;
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    table tbody tr {
+        background: #f9fafc;
+        transition: 0.2s ease;
+    }
+
+    table tbody tr:hover {
+        background: #eef2f7;
+    }
+
+    .status-badge {
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .status-paid {
+        background: #e6f7ed;
+        color: #1b8a4b;
+    }
+
+    .status-pending {
+        background: #fff3cd;
+        color: #856404;
+    }
+
+    .status-cancelled {
+        background: #fdecea;
+        color: #c82333;
+    }
+
+    .view-btn {
+        background: #ff6d33;
+        color: white;
+        border-radius: 8px;
+        padding: 6px 16px;
+        border: none;
+        font-weight: 600;
+        transition: 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .view-btn:hover {
+        background: #e65c24;
+        color: white;
+    }
+
+    .arrow-btn {
+        font-size: 18px;
+        text-decoration: none;
+    }
+
+    .dataTables_filter,
+    .dataTables_length {
+        display: none !important;
+    }
+
+    .dataTables_paginate .paginate_button {
+        border-radius: 6px !important;
+        padding: 6px 12px !important;
+        margin: 2px;
+    }
+
+    .dataTables_paginate .paginate_button.current {
+        background: #ff6d33 !important;
+        color: white !important;
+        border: none !important;
+    }
+
+    @media (max-width: 768px) {
+        .filter-row {
+            flex-direction: column;
+        }
+    }
+</style>
+
+<div class="page-wrapper">
+
+    <h1 class="page-title">My Orders</h1>
+
+    <div class="outer-box">
+        <div class="inner-box">
+
+            <!-- FILTERS -->
+            <div class="filter-row">
+
+                <div class="date-field">
+                    <label>From Date</label>
+                    <input type="date" id="fromDate">
+                </div>
+
+                <div class="date-field">
+                    <label>To Date</label>
+                    <input type="date" id="toDate">
+                </div>
+
+                <div class="date-field">
+                    <label>Search</label>
+                    <input type="text" id="searchInput"
+                           class="search-input"
+                           placeholder="Search by shop / status...">
+                </div>
+
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+                <table id="orderTable" class="table align-middle">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Shop</th>
+                        <th>Date</th>
+                        <th>Total Amount</th>
+                        <th>Address</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for o in orders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+
+                            <td>Pet Grooming Shop</td>
+
+                            <td>{{ o.date }}</td>
+
+                            <td>₹{{ o.total_amount }}</td>
+
+                            <td>
+                                {{ o.ADDRESS.name }},
+                                {{ o.ADDRESS.house_name }},
+                                {{ o.ADDRESS.place }},
+                                {{ o.ADDRESS.district }},
+                                {{ o.ADDRESS.pin }},
+                                Ph: {{ o.ADDRESS.phone }}
+                            </td>
+
+                            <td>
+                                <div style="display:flex; align-items:center; gap:10px; justify-content:center;">
+
+                                    <a href="/myapp/update_order_status_arrow/{{ o.id }}/down#a"
+                                       class="arrow-btn">⬇️</a>
+
+                                    <span class="status-badge
+                                        {% if o.status == 'paid' %}status-paid
+                                        {% elif o.status == 'pending' %}status-pending
+                                        {% else %}status-cancelled{% endif %}">
+                                        {{ o.status|title }}
+                                    </span>
+
+                                    <a href="/myapp/update_order_status_arrow/{{ o.id }}/up#a"
+                                       class="arrow-btn">⬆️</a>
+
+                                </div>
+                            </td>
+
+                            <td>
+                                <a href="/myapp/shop_view_order_items/{{ o.id }}/"
+                                   class="view-btn">
+                                    SUB ORDER
+                                </a>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="7" class="text-center">
+                                No orders found
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- SCRIPTS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
+<script>
+    $.fn.dataTable.ext.search.push(function (settings, data) {
+
+        let min = $('#fromDate').val();
+        let max = $('#toDate').val();
+        let dateStr = data[2];
+
+        if (!dateStr) return true;
+
+        let date = new Date(dateStr);
+        let minDate = min ? new Date(min) : null;
+        let maxDate = max ? new Date(max) : null;
+
+        return (!minDate || date >= minDate) &&
+               (!maxDate || date <= maxDate);
+    });
+
+    $(document).ready(function () {
+
+        const table = $('#orderTable').DataTable({
+            pageLength: 5,
+            ordering: true,
+            lengthMenu: [5, 10, 20]
+        });
+
+        $('#fromDate, #toDate').on('change', function () {
+            table.draw();
+        });
+
+        $('#searchInput').on('keyup', function () {
+            table.search(this.value).draw();
+        });
+
+    });
+</script>
+
+{% endblock %}

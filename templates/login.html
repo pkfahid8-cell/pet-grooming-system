@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paws & Whiskers | Login</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-orange: #FF6B00;
+            --secondary-orange: #FF8C42;
+            --light-orange: #FFE5D2;
+            --dark-orange: #E55A00;
+            --text-dark: #333333;
+            --text-light: #666666;
+            --background-light: #FFF9F5;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+                        url('https://images.unsplash.com/photo-1596273315327-5f05975a6d58?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-dark);
+            padding: 20px;
+            margin: 0;
+        }
+
+        .login-container {
+            display: flex;
+            width: 100%;
+            max-width: 1000px;
+            min-height: 600px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .welcome-section {
+            flex: 1;
+            background: linear-gradient(135deg, var(--primary-orange), var(--dark-orange));
+            color: white;
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .welcome-section::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 300px;
+            height: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+
+        .welcome-section::after {
+            content: "";
+            position: absolute;
+            bottom: -30%;
+            left: -10%;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 50%;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            margin-right: 12px;
+            background: white;
+            color: var(--primary-orange);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: 0.5px;
+        }
+
+        .welcome-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            line-height: 1.2;
+            z-index: 1;
+            position: relative;
+        }
+
+        .welcome-description {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            z-index: 1;
+            position: relative;
+        }
+
+        .features {
+            list-style: none;
+            padding: 0;
+            margin-top: 30px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .features li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            font-size: 15px;
+        }
+
+        .features i {
+            background: rgba(255, 255, 255, 0.2);
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 12px;
+        }
+
+        .login-section {
+            flex: 1;
+            background: var(--white);
+            padding: 50px 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .login-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: var(--text-light);
+            font-size: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-label {
+            font-weight: 500;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+        }
+
+        .form-label i {
+            margin-right: 8px;
+            color: var(--primary-orange);
+        }
+
+        .form-control {
+            height: 52px;
+            border-radius: 12px;
+            border: 2px solid #E8E8E8;
+            padding-left: 48px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-orange);
+            box-shadow: 0 0 0 0.2rem rgba(255, 107, 0, 0.15);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 18px;
+            top: 42px;
+            color: var(--text-light);
+            font-size: 18px;
+        }
+
+        .login-btn {
+            height: 52px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 16px;
+            background: linear-gradient(135deg, var(--primary-orange), var(--secondary-orange));
+            border: none;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, var(--dark-orange), var(--primary-orange));
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(255, 107, 0, 0.3);
+        }
+
+        .extra-links {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .extra-links a {
+            color: var(--primary-orange);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .extra-links a:hover {
+            color: var(--dark-orange);
+            text-decoration: underline;
+            transform: translateX(3px);
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 30px 0;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #E8E8E8;
+        }
+
+        .divider span {
+            padding: 0 15px;
+        }
+
+        .register-cta {
+            text-align: center;
+            background: var(--light-orange);
+            padding: 20px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .register-cta h5 {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .register-btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: var(--white);
+            color: var(--primary-orange);
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            border: 2px solid var(--primary-orange);
+            transition: all 0.3s ease;
+        }
+
+        .register-btn:hover {
+            background: var(--primary-orange);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 992px) {
+            .login-container {
+                flex-direction: column;
+                max-width: 500px;
+            }
+
+            .welcome-section {
+                padding: 40px 30px;
+            }
+
+            .login-section {
+                padding: 40px 30px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-container {
+                border-radius: 16px;
+            }
+
+            .welcome-section, .login-section {
+                padding: 30px 20px;
+            }
+
+            .welcome-title {
+                font-size: 28px;
+            }
+
+            .login-title {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="login-container">
+
+    <!-- Left Welcome Section -->
+    <div class="welcome-section">
+        <div class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-paw"></i>
+            </div>
+            <div class="logo-text">Paws & Whiskers</div>
+        </div>
+
+        <h1 class="welcome-title">Welcome Back to Your Pet's Paradise</h1>
+
+        <p class="welcome-description">
+            Access your account to manage appointments, view grooming services,
+            shop for premium pet products, and give your furry friends the care they deserve.
+        </p>
+
+        <ul class="features">
+            <li><i class="fas fa-check"></i> Professional grooming services</li>
+            <li><i class="fas fa-check"></i> Premium pet products store</li>
+            <li><i class="fas fa-check"></i> Appointment management</li>
+            <li><i class="fas fa-check"></i> Loyalty rewards program</li>
+        </ul>
+    </div>
+
+    <!-- Right Login Section -->
+    <div class="login-section">
+        <div class="login-header">
+            <h2 class="login-title">Sign In</h2>
+            <p class="login-subtitle">Enter your credentials to access your account</p>
+        </div>
+
+        <form action="/myapp/login_post/" method="post">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-user"></i> Username</label>
+                <div class="input-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+                <input type="text" name="username" class="form-control" placeholder="Enter your username" required>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label"><i class="fas fa-lock"></i> Password</label>
+                <div class="input-icon">
+                    <i class="fas fa-key"></i>
+                </div>
+                <input type="password" name="password" class="form-control" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100 login-btn">
+                <i class="fas fa-sign-in-alt me-2"></i> Login to Account
+            </button>
+        </form>
+
+        <div class="extra-links">
+            <a href="#"><i class="fas fa-key me-1"></i> Forgot Password?</a>
+        </div>
+
+        <div class="divider">
+            <span>New to Paws & Whiskers?</span>
+        </div>
+
+        <div class="register-cta">
+            <h5>Don't have an account yet?</h5>
+            <p class="mb-3">Join our community of pet lovers and get exclusive offers!</p>
+            <a href="/myapp/Staff_registration_get/#a" class="register-btn">
+                <i class="fas fa-store me-2"></i> Register Your Shop
+            </a>
+        </div>
+    </div>
+
+</div>
+<div class="content-wrapper">
+    {% block body %}
+        <!-- Page specific content will appear here -->
+    {% endblock %}
+</div>
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

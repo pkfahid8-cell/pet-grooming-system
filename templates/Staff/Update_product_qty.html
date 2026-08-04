@@ -1,0 +1,23 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+<h2>Update Product Quantity</h2>
+
+<form method="post">
+    {% csrf_token %}
+    <input type="hidden" name="id" value="{{ p.id }}">
+
+    <label>Product:</label>
+    <input type="text" value="{{ p.pname }}" readonly>
+
+    <br><br>
+
+    <label>Quantity:</label>
+    <input type="number" name="quantity" value="{{ p.Quantity }}" required>
+
+    <br><br>
+
+    <button type="submit">Update</button>
+</form>
+
+{% endblock %}

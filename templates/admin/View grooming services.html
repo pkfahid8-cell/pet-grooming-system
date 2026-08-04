@@ -1,0 +1,208 @@
+{% extends 'admin/admin_index.html' %}
+{% block body %}
+
+<style>
+
+    /* GLOBAL */
+    html, body {
+        scroll-behavior: smooth !important;
+        background: #f1f3f5 !important;
+        font-family: "Poppins", sans-serif;
+    }
+
+    /* Title */
+    .page-title {
+        font-size: 2.3rem;
+        font-weight: 700;
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+    }
+
+    /* Outer orange card */
+    .table-section {
+        max-width: 1200px;
+        margin: 30px auto;
+        background: linear-gradient(135deg, #ff512f, #ff914d);
+        padding: 25px;
+        border-radius: 22px;
+        box-shadow: 0 8px 35px rgba(0,0,0,0.25);
+        animation: fadeSlide 0.8s ease-out;
+    }
+
+    @keyframes fadeSlide {
+        from { opacity: 0; transform: translateY(35px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Inner white card */
+    .inner-card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 16px;
+    }
+
+    /* Table header */
+    table thead th {
+        background: #000 !important;
+        color: #fff !important;
+        text-transform: uppercase;
+        padding: 12px;
+        font-size: 14px;
+        letter-spacing: 0.5px;
+    }
+
+    /* Table hover */
+    table tbody tr:hover td {
+        background: #fff3e6 !important;
+    }
+
+    /* Image styling */
+    table img {
+        width: 90px;
+        height: 90px;
+        object-fit: cover;
+        border-radius: 10px;
+        border: 2px solid #ff6b00;
+    }
+
+    /* === SEARCH BOX PROFESSIONAL RIGHT ALIGNMENT === */
+    .dataTables_wrapper .dataTables_filter {
+        float: none !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        margin-bottom: 12px !important;
+    }
+
+    .dataTables_wrapper .dataTables_filter label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 700;
+        color: #ff6b00;
+    }
+
+    .dataTables_wrapper .dataTables_filter input {
+        background: #fff7ef;
+        border: 2px solid #ff6b00;
+        border-radius: 10px;
+        padding: 6px 12px;
+        width: 240px;
+        transition: .3s;
+    }
+
+    .dataTables_wrapper .dataTables_filter input:focus {
+        background: #fff2e6;
+        border-color: #ff4f00;
+        box-shadow: 0 0 10px rgba(255,110,0,0.35);
+    }
+
+    /* Length dropdown */
+    .dataTables_wrapper .dataTables_length select {
+        border: 2px solid #ff6b00;
+        border-radius: 8px;
+        padding: 4px;
+    }
+
+    /* Pagination styling */
+    .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+        background: #ff6b00 !important;
+        color: #fff !important;
+        border-radius: 6px !important;
+    }
+
+    .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+        background: #ff4f00 !important;
+        color: #fff !important;
+    }
+
+    /* Buttons */
+    .btn-warning {
+        background: #ffb300 !important;
+        border: none !important;
+        font-weight: 600;
+        color: #000 !important;
+    }
+
+    .btn-danger {
+        background: #ff3b3b !important;
+        border: none !important;
+        font-weight: 600;
+    }
+
+</style>
+
+
+<h2 class="page-title">Grooming Services</h2>
+
+<div class="table-section">
+
+    <div class="inner-card table-responsive">
+
+        <table id="groomingTable" class="table table-bordered table-hover align-middle">
+
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Service Name</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for s in data %}
+                <tr>
+                    <td>
+                        {% if s.image %}
+                            <img src="{{ s.image }}">
+                        {% else %}
+                            <span class="text-muted">No Image</span>
+                        {% endif %}
+                    </td>
+
+                    <td>{{ s.service_name }}</td>
+                    <td>{{ s.description }}</td>
+                    <td>₹ {{ s.price }}</td>
+                    <td>🕐{{ s.time }}</td>
+
+                    <td>
+                        <a href="/myapp/edit_grooming_services_get/{{ s.id }}#a" class="btn btn-warning btn-sm">Edit</a>
+
+                        <a href="/myapp/delete_groomigs_service/{{ s.id }}#a"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('Are you sure?');">
+                            Delete
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
+<script>
+$(document).ready(function () {
+    $('#groomingTable').DataTable({
+        pageLength: 5,
+        ordering: true,
+        lengthMenu: [5, 10, 20]
+    });
+});
+</script>
+
+{% endblock %}

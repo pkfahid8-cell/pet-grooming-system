@@ -1,0 +1,215 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+<style>
+html, body {
+    background: #f2f4f7;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* PAGE */
+.page-wrapper {
+    padding: 40px 20px;
+}
+
+/* TITLE */
+.page-title {
+    text-align: center;
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #1f2d3d;
+}
+
+/* ORANGE CONTAINER */
+.outer-box {
+    background: #ff6d33;
+    padding: 30px;
+    border-radius: 28px;
+    max-width: 1150px;
+    margin: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+.inner-box {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+}
+
+/* FILTER */
+.filter-row input {
+    height: 42px;
+    border-radius: 8px;
+}
+
+.filter-row button {
+    height: 42px;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* SUMMARY CARDS */
+.stat-card {
+    border-radius: 18px;
+    padding: 25px;
+    text-align: center;
+    font-weight: 600;
+    color: white;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.card-orders { background: #f42d19; }
+.card-groom { background: #28a745; }
+.card-sales { background: #007bff; }
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 2px solid #444;
+    font-size: 15px;
+}
+
+table thead th {
+    background: #1f2d3d;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    border: 1.5px solid #444;
+}
+
+table tbody td {
+    padding: 12px;
+    text-align: center;
+    border: 1.5px solid #444;
+}
+
+table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background: #eef2f7;
+}
+
+/* STATUS BADGE */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.status-paid {
+    background: #e6f7ed;
+    color: #1b8a4b;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-cancelled {
+    background: #fdecea;
+    color: #c82333;
+}
+
+@media (max-width: 768px) {
+    table thead th,
+    table tbody td {
+        font-size: 14px;
+    }
+}
+</style>
+
+<div class="page-wrapper">
+
+    <h1 class="page-title">Sales Report</h1>
+
+    <div class="outer-box">
+        <div class="inner-box">
+
+            <!-- DATE FILTER -->
+            <form method="get" class="row mb-4 filter-row">
+                <div class="col-md-3 mb-2">
+                    <input type="date" name="from" class="form-control">
+                </div>
+                <div class="col-md-3 mb-2">
+                    <input type="date" name="to" class="form-control">
+                </div>
+                <div class="col-md-2 mb-2">
+                    <button class="btn btn-dark w-100">Filter</button>
+                </div>
+            </form>
+
+            <!-- SUMMARY CARDS -->
+            <div class="row mb-4">
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card card-orders">
+                        <h5>Total Orders</h5>
+                        <h2>{{ total_orders }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card card-groom">
+                        <h5>Total Grooming</h5>
+                        <h2>{{ total_grooming }}</h2>
+                    </div>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <div class="stat-card card-sales">
+                        <h5>Total Sales</h5>
+                        <h2>₹{{ total_sales }}</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ o.date }}</td>
+                            <td>{{ o.USER.cname }}</td>
+                            <td>₹{{ o.total_amount }}</td>
+                            <td>
+                                <span class="status-badge
+                                    {% if o.status == 'paid' %}status-paid
+                                    {% elif o.status == 'pending' %}status-pending
+                                    {% else %}status-cancelled{% endif %}">
+                                    {{ o.status|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align:center;">
+                                No data found
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,88 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+<style>
+    body { background:#f4f6f9; font-family:"Poppins", sans-serif; }
+    .page-wrapper { padding:30px; }
+    .page-title { text-align:center; font-size:28px; font-weight:700; margin-bottom:25px; }
+
+    .outer-box {
+        background: linear-gradient(135deg,#ff6d33,#ff914d);
+        padding:25px;
+        border-radius:25px;
+        max-width:1100px;
+        margin:auto;
+    }
+
+    .inner-box {
+        background:white;
+        padding:20px;
+        border-radius:20px;
+    }
+
+    table thead { background:black; color:white; }
+    table thead th { padding:12px; }
+    table tbody td { padding:12px; }
+
+    .status-pending { background:#ff9f43; padding:5px 10px; border-radius:6px; font-weight:600; }
+    .status-resolved { background:#2ecc71; padding:5px 10px; border-radius:6px; color:white; }
+</style>
+
+<div class="page-wrapper">
+
+    <h1 class="page-title">Customer Complaints</h1>
+
+    <div class="outer-box">
+        <div class="inner-box">
+
+            <div class="table-responsive">
+                <table class="table table-bordered">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Complaint</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Reply</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for c in complaints %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ c.USER.cname }}</td>
+                            <td>{{ c.complaint }}</td>
+                            <td>{{ c.date }}</td>
+
+                            <td>
+                                {% if c.status == "pending" %}
+                                    <span class="status-pending">Pending</span>
+                                {% else %}
+                                    <span class="status-resolved">{{ c.status }}</span>
+                                {% endif %}
+                            </td>
+
+                            <td>
+                                {% if c.reply %}
+                                    {{ c.reply }}
+                                {% else %}
+                                    <span style="color:gray;">No Reply Yet</span>
+                                {% endif %}
+                            </td>
+
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

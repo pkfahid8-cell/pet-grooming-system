@@ -1,0 +1,163 @@
+{% extends 'Staff/shop_index.html' %}
+{% block body %}
+
+<style>
+html, body {
+    background: #f2f4f7;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* PAGE WRAPPER */
+.page-wrapper {
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+/* TITLE */
+.page-title {
+    text-align: center;
+    font-size: 2.3rem;
+    font-weight: 800;
+    margin-bottom: 30px;
+    color: #1f2d3d;
+}
+
+/* OUTER BOX */
+.outer-box {
+    background: #ff6d33;
+    padding: 30px;
+    border-radius: 28px;
+    max-width: 1000px;
+    margin: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+}
+
+/* INNER BOX */
+.inner-box {
+    background: #ffffff;
+    padding: 28px;
+    border-radius: 20px;
+}
+
+/* TABLE */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #ffffff;
+    font-size: 15px;
+    border: 2px solid #444;
+}
+
+/* HEADER */
+table thead th {
+    background: #1f2d3d;
+    color: white;
+    padding: 12px;
+    text-align: center;
+    font-weight: 700;
+    border: 1.5px solid #444;
+}
+
+/* BODY */
+table tbody td {
+    padding: 12px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1.5px solid #444;
+}
+
+/* ROW STRIPE */
+table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+/* HOVER */
+table tbody tr:hover {
+    background: #eef2f7;
+}
+
+/* STATUS BADGE */
+.status-badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.status-paid {
+    background: #e6f7ed;
+    color: #1b8a4b;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-cancelled {
+    background: #fdecea;
+    color: #c82333;
+}
+
+@media (max-width: 768px) {
+    table thead th,
+    table tbody td {
+        font-size: 14px;
+    }
+}
+</style>
+
+<div class="page-wrapper">
+
+    <h1 class="page-title">Payment Details</h1>
+
+    <div class="outer-box">
+        <div class="inner-box">
+
+            <div class="table-responsive">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for o in orders %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ o.USER.cname }}</td>
+                            <td>{{ o.date }}</td>
+                            <td>₹{{ o.total_amount }}</td>
+                            <td>
+                                <span class="status-badge
+                                    {% if o.status == 'paid' %}status-paid
+                                    {% elif o.status == 'pending' %}status-pending
+                                    {% else %}status-cancelled{% endif %}">
+                                    {{ o.status|title }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" style="text-align:center;">
+                                No payment records found
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
