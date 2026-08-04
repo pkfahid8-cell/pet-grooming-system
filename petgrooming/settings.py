@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
 from pathlib import Path
+import os
+import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,14 +85,10 @@ FILE_UPLOAD_HANDLERS = [
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pet_grooming',
-        'USER': 'root',
-        'PASSWORD': 'root',
-    }
-}
-
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL")
+    )
+}    
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
