@@ -48,3 +48,22 @@ A Full Stack Pet Grooming Management System built using Django, Flutter, REST AP
 - Reports
 
 > This project was developed for learning and portfolio purposes.
+## 📱 Flutter Mobile Application
+
+### Login
+![Login](screenshots/mobile-login.jpeg)
+
+### Register
+![Register](screenshots/mobile-register.jpeg)
+
+### Home
+![Home](screenshots/mobile-home.jpeg)
+
+### Products
+![Products](screenshots/mobile-products.jpeg)
+
+### Payment
+![Payment](screenshots/mobile-payment.jpeg)
+
+### Profile
+![Profile](screenshots/mobile-profile.jpeg)
