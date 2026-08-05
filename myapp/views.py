@@ -175,7 +175,6 @@ def view_shop(request):
 #         "approved": approved,
 #         "rejected": rejected
 #     })
-from django.http import HttpResponse
 
 def view_approved_and_rejected(request):
     approved = Staff.objects.filter(status="approved")
