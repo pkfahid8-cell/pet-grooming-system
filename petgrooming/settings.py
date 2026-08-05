@@ -19,9 +19,9 @@ import cloudinary.api
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 import dj_database_url
 cloudinary.config(
-    cloud_name=os.environ.get("agr63v0i"),
-    api_key=os.environ.get("672516131835426"),
-    api_secret=os.environ.get("hyhy76Q2tFO6Vz0dKbsysGkg2Us"),
+    cloud_name=os.environ.get("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.environ.get("CLOUDINARY_API_KEY"),
+    api_secret=os.environ.get("CLOUDINARY_API_SECRET"),
     secure=True,
 )
 
