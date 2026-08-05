@@ -628,7 +628,7 @@ def edit_profile_get(request, shop_id):
     return render(request, 'Staff/Edit shop profile.html', {'shop': shop})
 
 
-@login_required(login_url='/myapp/login_get')
+# @login_required(login_url='/myapp/login_get')
 # def edit_profile_shop_post(request):
 #     shop = Staff.objects.get(id=request.POST['staff_id'])
 #     shop.name = request.POST['name']
@@ -643,6 +643,25 @@ def edit_profile_get(request, shop_id):
 #     shop.save()
 #     return redirect('/myapp/view_profile_shop')
 
+@login_required(login_url='/myapp/login_get')
+def edit_profile_shop_post(request):
+    shop = Staff.objects.get(id=request.POST['staff_id'])
+
+    shop.name = request.POST['name']
+    shop.phone_no = request.POST['phone']
+
+    auth_user = shop.AUTHUSER
+    auth_user.username = request.POST['name']
+    auth_user.save()
+
+    if 'staff_image' in request.FILES:
+        image = request.FILES['staff_image']
+        result = cloudinary.uploader.upload(image)
+        shop.profile = result["secure_url"]
+
+    shop.save()
+
+    return redirect('/myapp/view_profile_shop')
 
 
 @login_required(login_url='/myapp/login_get')
