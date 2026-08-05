@@ -249,10 +249,8 @@ def add_product_post(request):
 
     category_obj = Category.objects.get(id=category_id)
 
-    fs = FileSystemStorage()
-    filename = datetime.now().strftime("%Y%m%d_%H%M%S") + "_" + image.name
-    fs.save(filename, image)
-    image_path = fs.url(filename)
+    result = cloudinary.uploader.upload(image)
+    image_path = result["secure_url"]
 
     product = Product()
     product.CATEGORY = category_obj
@@ -309,12 +307,8 @@ def edit_product_post(request):
     # ✅ Safe image handling
     image = request.FILES.get('image')
     if image:
-        fs = FileSystemStorage()
-        d = datetime.now().strftime("%Y%m%d_%H%M%S")
-        image_filename = d + "_img.jpg"
-        fs.save(image_filename, image)
-        product.image = fs.url(image_filename)
-
+        result = cloudinary.uploader.upload(image)
+        product.image = result["secure_url"]
     product.save()
     return redirect('/myapp/View_product/')
 
@@ -343,17 +337,15 @@ def add_grooming_post(request):
     image = request.FILES['image']
     time = request.POST['time']
 
-    fs = FileSystemStorage()
-    filename = datetime.now().strftime("%Y%m%d_%H%M%S") + image.name
-    fs.save(filename, image)
-    image_path = fs.url(filename)
+    result = cloudinary.uploader.upload(image)
 
     grooming = GroomingService()
     grooming.service_name = service_name
     grooming.description = description
     grooming.price = price
     grooming.time = time
-    grooming.image = image_path
+    grooming.image = result["secure_url"]
+
     grooming.save()
 
     return redirect('/myapp/adminhome')
@@ -377,11 +369,8 @@ def edit_grooming_services_post(request):
 
     if 'image' in request.FILES:
         image = request.FILES['image']
-        fs = FileSystemStorage()
-        d = datetime.now().strftime("%Y%m%d_%H%M%S")
-        image_filename = d + "_img.jpg"
-        fs.save(image_filename, image)
-        groom.image = fs.url(image_filename)
+        result = cloudinary.uploader.upload(image)
+        groom.image = result["secure_url"]
 
     groom.save()
     return redirect('/myapp/view_grooming')
@@ -640,21 +629,20 @@ def edit_profile_get(request, shop_id):
 
 
 @login_required(login_url='/myapp/login_get')
-def edit_profile_shop_post(request):
-    shop = Staff.objects.get(id=request.POST['staff_id'])
-    shop.name = request.POST['name']
-    shop.phone_no = request.POST['phone']
-    auth_user = shop.AUTHUSER
-    auth_user.username = request.POST['name']
-    auth_user.save()
-    image = request.FILES['staff_image']
-    fs = FileSystemStorage()
-    d = datetime.now().strftime("%Y%m%d_%H%M%S")
-    shop_filename = d + "_shop.jpg"
-    fs.save(shop_filename, image)
-    shop.profile = fs.url(shop_filename)
-    shop.save()
-    return redirect('/myapp/view_profile_shop')
+# def edit_profile_shop_post(request):
+#     shop = Staff.objects.get(id=request.POST['staff_id'])
+#     shop.name = request.POST['name']
+#     shop.phone_no = request.POST['phone']
+#     auth_user = shop.AUTHUSER
+#     auth_user.username = request.POST['name']
+#     auth_user.save()
+#     image = request.FILES['staff_image']
+#     result = cloudinary.uploader.upload(image)
+#     shop.profile = result["secure_url"]
+#     shop.profile = fs.url(shop_filename)
+#     shop.save()
+#     return redirect('/myapp/view_profile_shop')
+
 
 
 @login_required(login_url='/myapp/login_get')
@@ -1383,13 +1371,10 @@ def update_profile(request):
     cust.pin = request.POST["pin"]
     if "image" in request.FILES:
         image = request.FILES["image"]
-        fs = FileSystemStorage()
-        d = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = d + "_img.jpg"
-        fs.save(filename, image)
-        cust.profile_pic = filename
-    cust.save()
-    return JsonResponse({"status": "ok", "message": "Profile updated successfully"})
+        result = cloudinary.uploader.upload(image)
+        cust.profile_pic = result["secure_url"]
+        cust.save()
+        return JsonResponse({"status": "ok", "message": "Profile updated successfully"})
 
 
 @csrf_exempt
@@ -1444,11 +1429,8 @@ def user_signuppost(request):
         })
     if "image" in request.FILES:
         image = request.FILES["image"]
-        fs = FileSystemStorage()
-        d = datetime.now().strftime("%Y%m%d_%H%M%S")
-        image_filename = d + "_img.jpg"
-        fs.save(image_filename, image)
-        profile_path = image_filename
+        result = cloudinary.uploader.upload(image)
+        profile_path = result["secure_url"]
 
     u = User.objects.create_user(
         username=email,
