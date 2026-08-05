@@ -180,8 +180,13 @@ def view_approved_and_rejected(request):
     approved = Staff.objects.filter(status="approved")
     rejected = Staff.objects.filter(status="Rejected")
 
-    return HttpResponse(
-        f"Approved: {approved.count()} | Rejected: {rejected.count()}"
+    return render(
+        request,
+        "admin/view approved and rejected shop.html",
+        {
+            "approved": approved,
+            "rejected": rejected,
+        },
     )
 
 @login_required(login_url='/myapp/login_get')
