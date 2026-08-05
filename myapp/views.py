@@ -12,6 +12,7 @@ from django.http import request, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from datetime import datetime
 from django.utils import timezone
+import cloudinary.uploader
 
 from django.contrib.auth.models import User, Group
 from django.views.decorators.csrf import csrf_exempt
@@ -426,7 +427,6 @@ def view_delivery_address(request):
 def Staff_registration_get(request):
     return render(request, 'Staff/Staff registartion.html')
 
-
 def Staff_registration_Post(request):
     name = request.POST['name']
     place = request.POST['place']
@@ -437,16 +437,14 @@ def Staff_registration_Post(request):
     profile_img = request.FILES['profile']
 
     if (
-                User.objects.filter(username__iexact=name).exists() or
-                Staff.objects.filter(phone_no=phone).exists()
+        User.objects.filter(username__iexact=name).exists() or
+        Staff.objects.filter(phone_no=phone).exists()
     ):
         return render(request, 'Staff/Staff registartion.html')
 
-    f = FileSystemStorage()
-    d = datetime.now().strftime("%Y%m%d_%H%M%S")
-    filename = d + "_staff.jpg"
-    f.save(filename, profile_img)
-    profile_path = f.url(filename)
+    # Upload image to Cloudinary
+    result = cloudinary.uploader.upload(profile_img)
+    profile_path = result["secure_url"]
 
     authuser = User.objects.create_user(
         username=name,
@@ -469,6 +467,48 @@ def Staff_registration_Post(request):
     s.save()
 
     return redirect('/myapp/login_get')
+# def Staff_registration_Post(request):
+#     name = request.POST['name']
+#     place = request.POST['place']
+#     pin = request.POST['pin']
+#     post = request.POST['post']
+#     phone = request.POST['phone_no']
+#     password = request.POST['password']
+#     profile_img = request.FILES['profile']
+
+#     if (
+#                 User.objects.filter(username__iexact=name).exists() or
+#                 Staff.objects.filter(phone_no=phone).exists()
+#     ):
+#         return render(request, 'Staff/Staff registartion.html')
+
+#     f = FileSystemStorage()
+#     d = datetime.now().strftime("%Y%m%d_%H%M%S")
+#     filename = d + "_staff.jpg"
+#     f.save(filename, profile_img)
+#     profile_path = f.url(filename)
+
+#     authuser = User.objects.create_user(
+#         username=name,
+#         password=password,
+#         first_name=name
+#     )
+
+#     staff_group = Group.objects.get(name='staff')
+#     authuser.groups.add(staff_group)
+#     authuser.save()
+
+#     s = Staff()
+#     s.AUTHUSER = authuser
+#     s.name = name
+#     s.place = place
+#     s.pin = pin
+#     s.post = post
+#     s.phone_no = phone
+#     s.profile = profile_path
+#     s.save()
+
+#     return redirect('/myapp/login_get')
 
 
 def check_staff_exists(request):
