@@ -176,9 +176,17 @@ def view_shop(request):
 #         "rejected": rejected
 #     })
 def view_approved_and_rejected(request):
-    approved = Staff.objects.filter(status='approved')
-    rejected = Staff.objects.filter(status='rejected')
-    return HttpResponse("Working")
+    approved = Staff.objects.filter(status="approved")
+    rejected = Staff.objects.filter(status="rejected")
+
+    return render(
+        request,
+        "view approved and rejected shop.html",
+        {
+            "approved": approved,
+            "rejected": rejected,
+        },
+    )
 
 @login_required(login_url='/myapp/login_get')
 def view_cutomer(request):
