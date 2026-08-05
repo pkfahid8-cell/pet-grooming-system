@@ -1,54 +1,80 @@
 # 🐾 Pet Grooming Management System
 
-A Full Stack Pet Grooming Management System built using Django, Flutter, REST API, and MySQL.
+A Full Stack Pet Grooming Management System developed using Django, Flutter, REST API, PostgreSQL, Cloudinary, HTML, CSS, JavaScript, and Bootstrap.
+
+## 🌐 Live Demo
+
+https://pet-grooming-system-s43b.onrender.com
 
 ## 🚀 Features
 
 - User Registration & Login
-- Pet Grooming Service Booking
-- Product Management
-- Shopping Cart & Wishlist
-- Order Management
-- Online Payment Integration
 - Admin Dashboard
 - Staff Dashboard
-- Sales Reports
+- Pet Grooming Service Booking
+- Product Management
+- Shopping Cart
+- Wishlist
+- Order Management
+- Online Payment
 - Customer Management
+- Sales Reports
 
 ## 🛠️ Tech Stack
 
+### Backend
 - Python
 - Django
+- Django REST Framework
+
+### Mobile
 - Flutter
-- REST API
-- MySQL
+- Dart
+
+### Database
+- PostgreSQL (Render)
+
+### Cloud Storage
+- Cloudinary
+
+### Frontend
 - HTML
 - CSS
 - JavaScript
 - Bootstrap
 
-## 📱 Mobile Application
+### Deployment
+- Render
+- GitHub
 
-- Customer Login
-- Registration
+## 📱 Flutter Mobile Application
+
+- User Login
+- User Registration
+- Home
 - Product Listing
 - Grooming Booking
-- Cart
+- Shopping Cart
 - Wishlist
 - Payment
-- Profile
+- Profile Management
 
 ## 💻 Web Application
 
-- Admin Dashboard
-- Staff Dashboard
+### Admin
+- Dashboard
 - Product Management
 - Grooming Service Management
-- Order Management
+- Customer Management
 - Reports
 
-> This project was developed for learning and portfolio purposes.
-## 📱 Flutter Mobile Application
+### Staff
+- Dashboard
+- Order Management
+- Product Availability
+- Booking Management
+
+## 📸 Screenshots
 
 ### Login
 ![Login](screenshots/mobile-login.jpeg)
@@ -67,3 +93,11 @@ A Full Stack Pet Grooming Management System built using Django, Flutter, REST AP
 
 ### Profile
 ![Profile](screenshots/mobile-profile.jpeg)
+
+---
+
+## 👨‍💻 Developed By
+
+**Muhammed Fahid PK**
+
+This project was developed for learning, portfolio, and full-stack development practice.
