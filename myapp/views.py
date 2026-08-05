@@ -175,17 +175,14 @@ def view_shop(request):
 #         "approved": approved,
 #         "rejected": rejected
 #     })
+from django.http import HttpResponse
+
 def view_approved_and_rejected(request):
     approved = Staff.objects.filter(status="approved")
-    rejected = Staff.objects.filter(status="rejected")
+    rejected = Staff.objects.filter(status="Rejected")
 
-    return render(
-        request,
-        "view approved and rejected shop.html",
-        {
-            "approved": approved,
-            "rejected": rejected,
-        },
+    return HttpResponse(
+        f"Approved: {approved.count()} | Rejected: {rejected.count()}"
     )
 
 @login_required(login_url='/myapp/login_get')
