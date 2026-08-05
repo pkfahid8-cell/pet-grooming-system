@@ -52,11 +52,11 @@
                     <td>{{ i.pin }}</td>
                     <td>{{ i.license_number }}</td>
 
-                    <td><img src="{{ i.shop_image }}" width="90"></td>
+                    <td><img src="/media/{{ i.shop_image }}" width="90"></td>
 
                     <td>{{ i.owner_name }}</td>
 
-                    <td><img src="{{ i.owner_profile }}" width="90"></td>
+                    <td><img src="/media/{{ i.owner_profile }}" width="90"></td>
                 </tr>
             {% endfor %}
             </tbody>
