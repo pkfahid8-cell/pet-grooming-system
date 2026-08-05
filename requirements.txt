@@ -6,3 +6,4 @@ Pillow
 requests
 whitenoise
 cloudinary
+django-cloudinary-storage
